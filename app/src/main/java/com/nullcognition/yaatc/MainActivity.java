@@ -18,7 +18,7 @@ public class MainActivity extends BaseActivity{
 		FragmentTransaction ft = fm.beginTransaction();
 
 		if(fm.findFragmentByTag(FeedFragment.TAG) == null){
-			ft.add(R.id.linearLayout, new FeedFragment(), FeedFragment.TAG)
+			ft.add(R.id.linearLayout, new TestFragment(), TestFragment.TAG)
 			  .commit();
 		}
 

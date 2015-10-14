@@ -3,6 +3,7 @@ package com.nullcognition.yaatc.di.fragment;
 
 
 import com.nullcognition.yaatc.FeedFragment;
+import com.nullcognition.yaatc.TestFragment;
 
 import dagger.Subcomponent;
 
@@ -10,5 +11,6 @@ import dagger.Subcomponent;
 @Subcomponent(modules = { FragmentModule.class }) public interface FragmentComponent{
 
 	void inject(FeedFragment feedFragment);
+	void inject(TestFragment testFragment);
 
 }
