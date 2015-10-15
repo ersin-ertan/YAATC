@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import com.nullcognition.yaatc.di.activity.BaseActivity;
 import com.nullcognition.yaatc.di.application.navigation.switcher.Switcher;
 import com.nullcognition.yaatc.di.application.navigation.switcher.animator.FragmentAnimator;
 import com.nullcognition.yaatc.di.application.navigation.switcher.animator.FragmentSwitchAnimator;
@@ -15,7 +16,9 @@ import com.nullcognition.yaatc.di.fragment.BaseFragment;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
+@Singleton
 public class FragmentSwitcher implements Switcher{
 
 	private final FragmentSwitchAnimator switchAnimator;
@@ -26,7 +29,7 @@ public class FragmentSwitcher implements Switcher{
 	private String currentFragmentTag;
 	public String getCurrentFragmentTag(){ return currentFragmentTag; }
 
-	@Inject public FragmentSwitcher(@Named(FragmentAnimator.FADE_IN_OUT) FragmentSwitchAnimator switchAnimator){
+	@Inject public FragmentSwitcher(@Named(FragmentAnimator.SLIDE_LEFT_RIGHT) FragmentSwitchAnimator switchAnimator){
 		this.switchAnimator = switchAnimator;
 	}
 
@@ -49,8 +52,19 @@ public class FragmentSwitcher implements Switcher{
 			if(containerId == 0){
 				return;
 			}
-			currentFragment = switchAnimator.animateSwitch(ft, containerId, dstFragment);
+			currentFragment = switchAnimator.animateSwitch(ft, containerId, dstFragment, true);
 			currentFragmentTag = dstFragment.getSimpleName();
+		}
+	}
+
+	public void starter(final BaseActivity baseActivity, final int containerId, final Class<? extends BaseFragment> startFragment){
+		if(currentFragment != null){
+			switcher(currentFragment, startFragment);
+		}
+		else{
+			currentFragment = switchAnimator.animateSwitch(baseActivity.getSupportFragmentManager().beginTransaction(),
+					containerId, startFragment, false);
+			currentFragmentTag = startFragment.getSimpleName();
 		}
 	}
 }

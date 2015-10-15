@@ -8,6 +8,6 @@ import com.nullcognition.yaatc.di.fragment.BaseFragment;
 
 public interface FragmentSwitchAnimator{
 
-	BaseFragment animateSwitch(final FragmentTransaction fragmentTransaction, final int containerId, Class<? extends BaseFragment> dstFragment);
+	BaseFragment animateSwitch(final FragmentTransaction fragmentTransaction, final int containerId, Class<? extends BaseFragment> dstFragment, boolean isAnimated);
 
 }

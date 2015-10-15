@@ -10,6 +10,7 @@ import com.nullcognition.yaatc.di.fragment.BaseFragment;
 
 public abstract class FragmentAnimator implements FragmentSwitchAnimator{
 
+	public static final String NO_ANIMATION     = "NoAnimation";
 	public static final String FADE_IN_OUT      = "FragmentFadeAnimator";
 	public static final String SLIDE_LEFT_RIGHT = "FragmentSlideAnimator";
 
@@ -17,11 +18,11 @@ public abstract class FragmentAnimator implements FragmentSwitchAnimator{
 	public abstract int getExit();
 
 	@Override public BaseFragment animateSwitch(@NonNull final FragmentTransaction fragmentTransaction, final int containerId,
-	                                            @NonNull final Class<? extends BaseFragment> dstFragment){
+	                                            @NonNull final Class<? extends BaseFragment> dstFragment, boolean isAnimated){
 		BaseFragment newBaseFragment;
 		try{
 			newBaseFragment = dstFragment.newInstance();
-			fragmentTransaction.setCustomAnimations(getEnter(), getExit());
+			if(isAnimated){ fragmentTransaction.setCustomAnimations(getEnter(), getExit()); }
 		}
 		catch(InstantiationException | IllegalAccessException e){
 			Log.e("FragmentFadeAnimator", "**animateSwitch() ERROR**");
@@ -29,7 +30,6 @@ public abstract class FragmentAnimator implements FragmentSwitchAnimator{
 			return null;
 		}
 		fragmentTransaction.replace(containerId, newBaseFragment, dstFragment.getSimpleName()).commit();
-		// newBaseFragment.getClass().getSimpleName()
 		return newBaseFragment;
 
 	}

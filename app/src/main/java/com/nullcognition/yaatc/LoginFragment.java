@@ -5,7 +5,6 @@ package com.nullcognition.yaatc;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 
@@ -33,13 +32,6 @@ public class LoginFragment extends BaseFragment{
 	@Override public void onViewCreated(final View view, final Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 
-		if(getView() == null){
-			Toast.makeText(getActivity(), "NULL", Toast.LENGTH_SHORT).show();
-		}
-		else{
-			String id = String.valueOf(getView().getId());
-			Toast.makeText(getActivity(), id, Toast.LENGTH_SHORT).show();
-		}
 //		loginButton.setCallback(new Callback<TwitterSession>(){
 //			@Override
 //			public void success(Result<TwitterSession> result){

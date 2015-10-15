@@ -3,24 +3,25 @@ package com.nullcognition.yaatc;
 import android.os.Bundle;
 
 import com.nullcognition.yaatc.di.activity.BaseActivity;
-import com.nullcognition.yaatc.di.fragment.BaseFragment;
 
 public class MainActivity extends BaseActivity{
-
-	BaseFragment replace;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
-		replace = new LoginFragment();
-		getSupportFragmentManager().beginTransaction().add(R.id.activity_main_rootLayout, replace, LoginFragment.TAG).commit();
+		if(savedInstanceState == null){
+		}
 	}
 
+	@Override protected void onStart(){
+		super.onStart();
+		navigator.startFragment(this, R.id.activity_main_rootLayout, LoginFragment.class);
+	}
 	@Override protected void onPostCreate(final Bundle savedInstanceState){
 		super.onPostCreate(savedInstanceState);
-		// did not work right after call, even with internal ft.executePendingTransactions();
-		navigator.switchFragment(replace, FeedFragment.class);
+
+//		navigator.switchFragment(replace, FeedFragment.class);
 	}
 
 	//	@Override public void onActivityResult(int requestCode, int resultCode, Intent data){
