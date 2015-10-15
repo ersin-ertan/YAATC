@@ -3,9 +3,11 @@ package com.nullcognition.yaatc.di.fragment;
 
 import android.content.Context;
 import android.text.InputType;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nullcognition.yaatc.R;
+import com.nullcognition.yaatc.TweetHandler;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,7 +19,7 @@ import dagger.Provides;
 
 	@Provides BaseFragment provideBaseFragment(){ return baseFragment; }
 
-	@Provides public MaterialDialog.Builder provideTwitterDialog(Context context){
+	@Provides public MaterialDialog.Builder provideTwitterDialog(final Context context, final TweetHandler tweetHandler){
 
 		return new MaterialDialog.Builder(context)
 				.title(R.string.app_name)
@@ -28,10 +30,13 @@ import dagger.Provides;
 				.input(R.string.whats_happ, R.string.empty, new MaterialDialog.InputCallback(){
 							@Override
 							public void onInput(MaterialDialog dialog, CharSequence input){
-								// twitter call
+								Toast.makeText(context, input, Toast.LENGTH_SHORT).show();
+								tweetHandler.setText(String.valueOf(input));
 							}
 						}
+
 				);
 	}
+
 
 }

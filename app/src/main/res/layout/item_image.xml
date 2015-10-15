@@ -14,7 +14,7 @@
 	android:orientation = "vertical"
 	>
 
-
+<!--with image view has 2 maxlines-->
 	<me.grantland.widget.AutofitTextView
 
 		android:id = "@+id/item_text"

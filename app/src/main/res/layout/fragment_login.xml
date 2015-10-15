@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout
+	android:background = "@color/colorPrimary"
+	android:layout_height = "match_parent"
+	android:layout_width = "match_parent"
+	xmlns:android = "http://schemas.android.com/apk/res/android"
+	xmlns:app = "http://schemas.android.com/apk/res-auto"
+	>
+
+	<ImageView
+
+		android:contentDescription = "@string/app_logo_content_description"
+		android:id = "@+id/centered_image"
+		android:layout_centerInParent = "true"
+		android:layout_gravity = "center_horizontal"
+		android:layout_height = "match_parent"
+		android:layout_width = "match_parent"
+		android:src = "@drawable/ic_speaker_notes_24dp"
+		app:layout_heightPercent = "70%"
+		app:layout_widthPercent = "70%"
+		/>
+
+
+	<LinearLayout
+		android:layout_below = "@id/centered_image" android:layout_centerInParent = "true"
+		android:layout_height = "match_parent"
+		android:layout_width = "match_parent"
+		app:layout_marginEndPercent = "30%"
+		app:layout_marginStartPercent = "30%"
+		>
+
+		<Space
+			android:layout_height = "match_parent"
+			android:layout_weight = "1"
+			android:layout_width = "wrap_content"
+			/>
+
+
+		<ImageView
+			android:contentDescription = "@string/app_logo_content_description"
+			android:gravity = "center_vertical"
+			android:layout_gravity = "center_vertical"
+			android:layout_height = "match_parent"
+			android:layout_weight = "1"
+			android:layout_width = "0dp"
+			android:src = "@drawable/tw__ic_logo_default"
+			/>
+
+		<Button
+			android:id = "@+id/twitter_login_button"
+			android:layout_gravity = "center_vertical"
+			android:layout_height = "wrap_content"
+			android:layout_weight = "1"
+			android:layout_width = "wrap_content"
+			android:text = "@string/dgts__sign_in_twitter"
+			/>
+
+		<Space
+			android:layout_height = "match_parent"
+			android:layout_weight = "1"
+			android:layout_width = "wrap_content"
+			/>
+
+
+	</LinearLayout>
+
+
+</android.support.percent.PercentRelativeLayout>
+

@@ -12,9 +12,10 @@ import dagger.Provides;
 	private final BaseActivity baseActivity;
 	public ActivityModule(BaseActivity a){baseActivity = a;}
 
-//	@ActivityScope
-//	@Provides public BaseActivity provideBaseActivity(){return baseActivity;}
+	//	@ActivityScope
+	@Provides public BaseActivity provideBaseActivity(){return baseActivity;}
 
 	@Provides public Context provideContext(){ return baseActivity; }
+
 
 }

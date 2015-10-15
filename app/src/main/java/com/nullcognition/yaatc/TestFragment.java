@@ -34,8 +34,8 @@ public class TestFragment extends BaseFragment{
 
 	private void initRecyclerView(final AppCompatActivity activity){
 		recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-		FeedAdapter adapter = new FeedAdapter(activity, getAnimals());
-		recyclerView.setAdapter(adapter);
+//		FeedAdapter adapter = new FeedAdapter(activity, getAnimals());
+//		recyclerView.setAdapter(adapter);
 	}
 
 	@Override public void onViewCreated(final View view, final Bundle savedInstanceState){

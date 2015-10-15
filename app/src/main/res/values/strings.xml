@@ -97,4 +97,6 @@
 	<string name = "action_home">Home</string>
 	<string name = "action_logout">Logout</string>
 	<string name = "twitter_feed_image">Image from twitter feed</string>
+	<string name = "app_logo_content_description">Twitter Logo</string>
+	<string name = "tweet_image">Tweet with Image</string>
 </resources>

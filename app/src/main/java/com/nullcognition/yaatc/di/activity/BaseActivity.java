@@ -5,6 +5,7 @@ package com.nullcognition.yaatc.di.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.nullcognition.yaatc.Navigator;
 import com.nullcognition.yaatc.di.application.YAATCApp;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 import com.nullcognition.yaatc.di.fragment.FragmentComponent;
@@ -18,8 +19,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity{
 
-//	@Inject protected Navigator navigator;
-
+	@Inject public Navigator navigator;
 	@Retained String temp;
 
 	protected ActivityComponent activityComponent;
@@ -69,7 +69,6 @@ public abstract class BaseActivity extends AppCompatActivity{
 	}
 
 	@Override public void finish(){
-//		Navigator.currentFragment = null;
 		YAATCApp.get(this).releaseActivityComponent();
 		super.finish();
 	}

@@ -10,6 +10,7 @@ import com.hannesdorfmann.adapterdelegates.AdapterDelegatesManager;
 import com.nullcognition.yaatc.adapterdelegate.ImageItemAdapterDelegate;
 import com.nullcognition.yaatc.adapterdelegate.TextItemAdapterDelegate;
 import com.nullcognition.yaatc.model.FeedItem;
+import com.nullcognition.yaatc.model.TextItem;
 
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class FeedAdapter extends RecyclerView.Adapter{
 		delegatesManager.addDelegate(new ImageItemAdapterDelegate(activity, 1));
 
 	}
+
+	public void addItem(String text){ items.add(new TextItem(text)); }
 
 	@Override public int getItemViewType(int position){
 		return delegatesManager.getItemViewType(items, position);

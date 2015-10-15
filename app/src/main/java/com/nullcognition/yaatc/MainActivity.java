@@ -1,29 +1,31 @@
 package com.nullcognition.yaatc;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.nullcognition.yaatc.di.activity.BaseActivity;
 
 public class MainActivity extends BaseActivity{
 
+
+	@Override protected void onPostCreate(final Bundle savedInstanceState){
+		super.onPostCreate(savedInstanceState);
+				navigator.startFragment(MainActivity.this);
+
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-
-		FragmentManager     fm = getSupportFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-
-		if(fm.findFragmentByTag(FeedFragment.TAG) == null){
-			ft.add(R.id.linearLayout, new FeedFragment(), FeedFragment.TAG)
-			  .commit();
-		}
-
-
 	}
+
+
+	//	@Override public void onActivityResult(int requestCode, int resultCode, Intent data){
+//		super.onActivityResult(requestCode, resultCode, data);
+//		Fragment fragment = getSupportFragmentManager().findFragmentByTag(navigator.getCurrentFragmentTag());
+//		if(fragment != null){
+//			fragment.onActivityResult(requestCode, resultCode, data); }
+//	}
+
+
 	@Override protected int getActivityLayout(){ return R.layout.activity_main; }
 
 	@Override protected void injectSelf(){ activityComponent.inject(this); }

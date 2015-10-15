@@ -7,11 +7,12 @@
 	xmlns:autofit = "http://schemas.android.com/apk/res-auto"
 	>
 
+	<!-- without image has 3 max lines-->
 	<me.grantland.widget.AutofitTextView
 		android:id = "@+id/item_text"
 		android:layout_height = "wrap_content"
 		android:layout_width = "match_parent"
-		android:maxLines = "2"
+		android:maxLines = "3"
 		android:paddingBottom = "@dimen/fab_margin"
 		android:paddingEnd = "@dimen/fab_margin"
 		android:paddingStart = "@dimen/fab_margin"
