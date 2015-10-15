@@ -4,19 +4,22 @@
 	xmlns:app = "http://schemas.android.com/apk/res-auto"
 	xmlns:tools = "http://schemas.android.com/tools"
 	>
-	<!-- -->
+
+	<!-- smooth scrolling did not work to get to the top of the list-->
+
 	<!--<item-->
-		<!--android:id = "@+id/action_settings"-->
+		<!--android:icon = "@drawable/ic_home_24dp"-->
+		<!--android:id = "@+id/action_home"-->
 		<!--android:orderInCategory = "100"-->
-		<!--android:title = "@string/action_settings"-->
-		<!--app:showAsAction = "never"-->
+		<!--android:title = "@string/action_home"-->
+		<!--app:showAsAction = "always"-->
 		<!--/>-->
 
 
 	<item
 		android:id = "@+id/action_logout"
 		android:orderInCategory = "100"
-		android:title = "@string/action_settings"
+		android:title = "@string/action_logout"
 		app:showAsAction = "never"
 		/>
 

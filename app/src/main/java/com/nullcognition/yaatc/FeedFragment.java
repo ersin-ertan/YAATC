@@ -15,10 +15,10 @@ import android.view.View;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 import com.nullcognition.yaatc.model.FeedItem;
+import com.nullcognition.yaatc.model.ImageItem;
 import com.nullcognition.yaatc.model.TextItem;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,6 +30,7 @@ public class FeedFragment extends BaseFragment{
 
 	public static final String TAG = FeedFragment.class.getSimpleName();
 
+	FeedAdapter adapter;
 	@Inject                  MaterialDialog.Builder materialDialog;
 	@Bind(R.id.toolbar)      Toolbar                toolbar;
 	@Bind(R.id.recyclerView) RecyclerView           recyclerView;
@@ -45,8 +46,10 @@ public class FeedFragment extends BaseFragment{
 
 	private void initRecyclerView(final AppCompatActivity activity){
 		recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-		FeedAdapter adapter = new FeedAdapter(activity, getAnimals());
+		adapter = new FeedAdapter(activity, getAnimals());
 		recyclerView.setAdapter(adapter);
+		recyclerView.setNestedScrollingEnabled(false);
+		recyclerView.setHasFixedSize(false);
 	}
 
 	@Override public void onViewCreated(final View view, final Bundle savedInstanceState){
@@ -69,12 +72,16 @@ public class FeedFragment extends BaseFragment{
 		int id = item.getItemId();
 
 		if(id == R.id.action_logout){ return true; }
+//		if(id == R.id.action_home){
+//			recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+//			return true; }
 		return super.onOptionsItemSelected(item);
 	}
 
 	private List<FeedItem> getAnimals(){
 		List<FeedItem> animals = new ArrayList<>();
 
+		animals.add(new ImageItem("Collie", "https://avatars2.githubusercontent.com/u/4809853?v=3&u=c242e3f70705bc5d280484ba2adb582c645900e7&s=140"));
 		animals.add(new TextItem("American Curl"));
 		animals.add(new TextItem("Baliness"));
 		animals.add(new TextItem("Bengal"));
@@ -84,21 +91,8 @@ public class FeedFragment extends BaseFragment{
 		animals.add(new TextItem("Aidi"));
 		animals.add(new TextItem("Chinook"));
 		animals.add(new TextItem("Appenzeller"));
-		animals.add(new TextItem("Collie"));
-		animals.add(new TextItem("American Curl"));
-		animals.add(new TextItem("Baliness"));
-		animals.add(new TextItem("Bengal"));
-		animals.add(new TextItem("Corat"));
-		animals.add(new TextItem("Manx"));
-		animals.add(new TextItem("Nebelung"));
-		animals.add(new TextItem("Aidi"));
-		animals.add(new TextItem("Chinook"));
-		animals.add(new TextItem("Appenzeller"));
-		animals.add(new TextItem("Collie"));
-		animals.add(new TextItem("American Curl"));
-		animals.add(new TextItem("Baliness"));
-		animals.add(new TextItem("Bengal"));
-		animals.add(new TextItem("Corat"));
+		animals.add(new ImageItem("Collie", "https://avatars2.githubusercontent.com/u/4809853?v=3&u=c242e3f70705bc5d280484ba2adb582c645900e7&s=140"));
+
 		animals.add(new TextItem("Manx"));
 		animals.add(new TextItem("Nebelung"));
 		animals.add(new TextItem("Aidi"));
@@ -106,7 +100,7 @@ public class FeedFragment extends BaseFragment{
 		animals.add(new TextItem("Appenzeller"));
 		animals.add(new TextItem("Collie"));
 
-		Collections.shuffle(animals);
+//		Collections.shuffle(animals);
 		return animals;
 	}
 

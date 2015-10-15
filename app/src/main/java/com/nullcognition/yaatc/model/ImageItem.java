@@ -4,5 +4,9 @@ package com.nullcognition.yaatc.model;
 
 public class ImageItem extends Item{
 
-	public ImageItem(String text){super(text);}
+	public final String imageUrl;
+	public ImageItem(String text, String imageUrl){
+		super(text);
+		this.imageUrl = imageUrl;
+	}
 }

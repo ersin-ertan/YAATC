@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.hannesdorfmann.adapterdelegates.AdapterDelegatesManager;
+import com.nullcognition.yaatc.adapterdelegate.ImageItemAdapterDelegate;
 import com.nullcognition.yaatc.adapterdelegate.TextItemAdapterDelegate;
 import com.nullcognition.yaatc.model.FeedItem;
 
@@ -22,7 +23,7 @@ public class FeedAdapter extends RecyclerView.Adapter{
 
 		delegatesManager = new AdapterDelegatesManager<>();
 		delegatesManager.addDelegate(new TextItemAdapterDelegate(activity, 0));
-//		delegatesManager.addDelegate(new ImageItemAdapterDelegate(activity, 1));
+		delegatesManager.addDelegate(new ImageItemAdapterDelegate(activity, 1));
 
 	}
 

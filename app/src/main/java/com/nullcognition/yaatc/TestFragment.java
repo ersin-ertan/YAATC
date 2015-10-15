@@ -48,9 +48,9 @@ public class TestFragment extends BaseFragment{
 	private List<FeedItem> getAnimals(){
 		List<FeedItem> animals = new ArrayList<>();
 
-		animals.add(new TextItem("American Curl"));
-		animals.add(new TextItem("Baliness"));
-		animals.add(new TextItem("Bengal"));
+		animals.add(new TextItem(" snth teu esnh toeu  nhtoaeu snthoaeu  eu u asuhtnaosu thaouo aou snaoe us nthaoeus nhaoeu ouos nthaoeu snteu uaeouo aeoe ua ueoue ouoea  ee"));
+		animals.add(new TextItem("Baliness of the things that go in the night"));
+		animals.add(new TextItem("Bengal because the things that areth me most random are often the thingks nthat go"));
 		animals.add(new TextItem("Corat"));
 		animals.add(new TextItem("Manx"));
 		animals.add(new TextItem("Nebelung"));

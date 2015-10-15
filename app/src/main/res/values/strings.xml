@@ -94,4 +94,7 @@
 	<string name = "tweet">Tweet</string>
 	<string name = "empty"/>
 	<string name = "app_name_full">Yet Another Android Twitter Client</string>
+	<string name = "action_home">Home</string>
+	<string name = "action_logout">Logout</string>
+	<string name = "twitter_feed_image">Image from twitter feed</string>
 </resources>

@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.v7.widget.CardView
+	android:layout_width = "match_parent"
 	android:layout_height = "wrap_content"
 	android:layout_margin = "@dimen/md_button_padding_frame_side"
-	android:layout_width = "match_parent"
 	xmlns:android = "http://schemas.android.com/apk/res/android"
 	xmlns:autofit = "http://schemas.android.com/apk/res-auto"
 	>
 
+<LinearLayout
+	android:layout_height = "wrap_content"
+	android:layout_width = "match_parent"
+	android:orientation = "vertical"
+	>
+
+
 	<me.grantland.widget.AutofitTextView
+
 		android:id = "@+id/item_text"
 		android:layout_height = "wrap_content"
 		android:layout_width = "match_parent"
@@ -22,4 +31,15 @@
 		autofit:paddingStart = "@dimen/fab_margin"
 		/>
 
+	<ImageView
+		android:contentDescription = "@string/twitter_feed_image"
+		android:id = "@+id/item_image"
+		android:layout_height = "wrap_content"
+		android:layout_width = "match_parent"
+		android:maxHeight = "128dp"
+		android:baselineAlignBottom = "false"
+		/>
+
+
+</LinearLayout>
 </android.support.v7.widget.CardView>
