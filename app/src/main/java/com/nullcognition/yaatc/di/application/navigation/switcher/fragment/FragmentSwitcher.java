@@ -16,9 +16,8 @@ import com.nullcognition.yaatc.di.fragment.BaseFragment;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
 
-@Singleton
+//@Singleton
 public class FragmentSwitcher implements Switcher{
 
 	private final FragmentSwitchAnimator switchAnimator;
@@ -55,16 +54,12 @@ public class FragmentSwitcher implements Switcher{
 			currentFragment = switchAnimator.animateSwitch(ft, containerId, dstFragment, true);
 			currentFragmentTag = dstFragment.getSimpleName();
 		}
+
 	}
 
 	public void starter(final BaseActivity baseActivity, final int containerId, final Class<? extends BaseFragment> startFragment){
-		if(currentFragment != null){
-			switcher(currentFragment, startFragment);
-		}
-		else{
-			currentFragment = switchAnimator.animateSwitch(baseActivity.getSupportFragmentManager().beginTransaction(),
-					containerId, startFragment, false);
-			currentFragmentTag = startFragment.getSimpleName();
-		}
+		currentFragment = switchAnimator.animateSwitch(baseActivity.getSupportFragmentManager().beginTransaction(),
+				containerId, startFragment, false);
+		currentFragmentTag = startFragment.getSimpleName();
 	}
 }

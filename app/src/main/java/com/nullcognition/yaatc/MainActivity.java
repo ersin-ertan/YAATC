@@ -10,13 +10,18 @@ public class MainActivity extends BaseActivity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
-		if(savedInstanceState == null){
+
+		if(navigator.getCurrentFragment() == null){
+			navigator.startFragment(this, R.id.activity_main_rootLayout, LoginFragment.class);
+		}
+		else{
+			navigator.startFragment(this, R.id.activity_main_rootLayout, navigator.getCurrentFragment().getClass());
 		}
 	}
 
 	@Override protected void onStart(){
 		super.onStart();
-		navigator.startFragment(this, R.id.activity_main_rootLayout, LoginFragment.class);
+//		navigator.switchFragment(navigator.getCurrentFragment(), FeedFragment.class);
 	}
 	@Override protected void onPostCreate(final Bundle savedInstanceState){
 		super.onPostCreate(savedInstanceState);

@@ -14,13 +14,14 @@ import com.nullcognition.yaatc.di.application.navigation.Navigator;
 import com.sora.util.akatsuki.Akatsuki;
 import com.sora.util.akatsuki.Retained;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends Fragment{
 
 	@Retained      String    temp;
-//	@Inject
-	public Navigator navigator;
+	@Inject public Navigator navigator;
 
 
 	protected FragmentComponent fragmentComponent;
