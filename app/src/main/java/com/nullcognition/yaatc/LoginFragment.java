@@ -5,8 +5,8 @@ package com.nullcognition.yaatc;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import com.nullcognition.yaatc.di.activity.BaseActivity;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -14,12 +14,12 @@ import butterknife.OnClick;
 
 public class LoginFragment extends BaseFragment{
 
-	public static final String TAG = LoginFragment.class.getSimpleName();
+	public static final String TAG = "LoginFragment";
 
 	@Bind(R.id.twitter_login_button) Button loginButton;
 
 	@OnClick(R.id.twitter_login_button) void twitter_login_button(final View view){
-		navigator.switchFragment((BaseActivity) getActivity(), LoginFragment.class, FeedFragment.class);
+		navigator.switchFragment(this, FeedFragment.class);
 	}
 
 
@@ -33,6 +33,13 @@ public class LoginFragment extends BaseFragment{
 	@Override public void onViewCreated(final View view, final Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 
+		if(getView() == null){
+			Toast.makeText(getActivity(), "NULL", Toast.LENGTH_SHORT).show();
+		}
+		else{
+			String id = String.valueOf(getView().getId());
+			Toast.makeText(getActivity(), id, Toast.LENGTH_SHORT).show();
+		}
 //		loginButton.setCallback(new Callback<TwitterSession>(){
 //			@Override
 //			public void success(Result<TwitterSession> result){
@@ -49,7 +56,6 @@ public class LoginFragment extends BaseFragment{
 //		});
 
 	}
-
 }
 
 

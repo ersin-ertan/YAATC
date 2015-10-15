@@ -3,6 +3,7 @@ package com.nullcognition.yaatc.di.activity;
 
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,5 +18,7 @@ import dagger.Provides;
 
 	@Provides public Context provideContext(){ return baseActivity; }
 
-
+	@Provides public FragmentManager provideFragmentManager(BaseActivity baseActivity){
+		return baseActivity.getSupportFragmentManager();
+	}
 }

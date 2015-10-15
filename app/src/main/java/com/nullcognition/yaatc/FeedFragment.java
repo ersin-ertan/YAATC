@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.nullcognition.yaatc.di.activity.BaseActivity;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 import com.nullcognition.yaatc.model.FeedItem;
 import com.nullcognition.yaatc.model.ImageItem;
@@ -77,7 +76,7 @@ public class FeedFragment extends BaseFragment{
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
-		menuInflater.inflate(R.menu.menu_scrolling, menu);
+		menuInflater.inflate(R.menu.menu_feed, menu);
 	}
 
 	@Override
@@ -85,8 +84,9 @@ public class FeedFragment extends BaseFragment{
 		int id = item.getItemId();
 
 		if(id == R.id.action_logout){
-			navigator.switchFragment((BaseActivity) getActivity(), FeedFragment.class, LoginFragment.class);
-			return true; }
+			navigator.switchFragment(this, LoginFragment.class);
+			return true;
+		}
 //		if(id == R.id.action_home){
 //			recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 //			return true; }
@@ -129,7 +129,3 @@ public class FeedFragment extends BaseFragment{
 
 	@Override protected int getFragmentLayout(){return R.layout.fragment_feed; }
 }
-
-
-//				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//				        .setAction("Action", null).show();

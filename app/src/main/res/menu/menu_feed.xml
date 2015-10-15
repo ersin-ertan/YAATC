@@ -1,5 +1,5 @@
 <menu
-	tools:context = ".ScrollingActivity"
+	tools:context = ".FeedFragment"
 	xmlns:android = "http://schemas.android.com/apk/res/android"
 	xmlns:app = "http://schemas.android.com/apk/res-auto"
 	xmlns:tools = "http://schemas.android.com/tools"
@@ -7,13 +7,13 @@
 
 	<!-- smooth scrolling did not work to get to the top of the list-->
 
-	<!--<item-->
-		<!--android:icon = "@drawable/ic_home_24dp"-->
-		<!--android:id = "@+id/action_home"-->
-		<!--android:orderInCategory = "100"-->
-		<!--android:title = "@string/action_home"-->
-		<!--app:showAsAction = "always"-->
-		<!--/>-->
+	<item
+		android:icon = "@drawable/ic_home_24dp"
+		android:id = "@+id/action_home"
+		android:orderInCategory = "100"
+		android:title = "@string/action_home"
+		app:showAsAction = "always"
+		/>
 
 
 	<item

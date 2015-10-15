@@ -99,4 +99,6 @@
 	<string name = "twitter_feed_image">Image from twitter feed</string>
 	<string name = "app_logo_content_description">Twitter Logo</string>
 	<string name = "tweet_image">Tweet with Image</string>
+	<string name = "new_tweet">New Tweet</string>
+	<string name = "scroll_home">Scroll Home</string>
 </resources>
