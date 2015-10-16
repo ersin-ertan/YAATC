@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nullcognition.yaatc.R;
-import com.nullcognition.yaatc.TweetHandler;
+import com.nullcognition.yaatc.api.TweetHandler;
 
 import dagger.Module;
 import dagger.Provides;

@@ -1,8 +1,10 @@
-package com.nullcognition.yaatc;
+package com.nullcognition.yaatc.view.activity;
 
 import android.os.Bundle;
 
+import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.di.activity.BaseActivity;
+import com.nullcognition.yaatc.view.fragment.LoginFragment;
 
 public class MainActivity extends BaseActivity{
 
@@ -11,12 +13,7 @@ public class MainActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 
 
-		if(navigator.getCurrentFragment() == null){
-			navigator.startFragment(this, R.id.activity_main_rootLayout, LoginFragment.class);
-		}
-		else{
-			navigator.startFragment(this, R.id.activity_main_rootLayout, navigator.getCurrentFragment().getClass());
-		}
+		navigator.startFragment(this, R.id.activity_main_rootLayout, LoginFragment.class);
 	}
 
 	@Override protected void onStart(){

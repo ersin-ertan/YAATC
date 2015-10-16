@@ -1,4 +1,4 @@
-package com.nullcognition.yaatc;
+package com.nullcognition.yaatc.view.fragment;
 // ersin 14/10/15 Copyright (c) 2015+ All rights reserved.
 
 
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 
 import butterknife.Bind;

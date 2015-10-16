@@ -2,9 +2,9 @@ package com.nullcognition.yaatc.di.activity;
 // ersin 14/10/15 Copyright (c) 2015+ All rights reserved.
 
 
-import com.nullcognition.yaatc.MainActivity;
 import com.nullcognition.yaatc.di.fragment.FragmentComponent;
 import com.nullcognition.yaatc.di.fragment.FragmentModule;
+import com.nullcognition.yaatc.view.activity.MainActivity;
 
 import dagger.Subcomponent;
 

@@ -1,4 +1,4 @@
-package com.nullcognition.yaatc;
+package com.nullcognition.yaatc.view.adapter;
 // ersin 14/10/15 Copyright (c) 2015+ All rights reserved.
 
 
@@ -7,10 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.hannesdorfmann.adapterdelegates.AdapterDelegatesManager;
-import com.nullcognition.yaatc.adapterdelegate.ImageItemAdapterDelegate;
-import com.nullcognition.yaatc.adapterdelegate.TextItemAdapterDelegate;
 import com.nullcognition.yaatc.model.FeedItem;
 import com.nullcognition.yaatc.model.TextItem;
+import com.nullcognition.yaatc.view.adapter.adapterdelegate.ImageItemAdapterDelegate;
+import com.nullcognition.yaatc.view.adapter.adapterdelegate.TextItemAdapterDelegate;
 
 import java.util.List;
 

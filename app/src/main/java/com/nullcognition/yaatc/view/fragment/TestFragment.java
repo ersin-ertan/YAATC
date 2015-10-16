@@ -1,4 +1,4 @@
-package com.nullcognition.yaatc;
+package com.nullcognition.yaatc.view.fragment;
 // ersin 14/10/15 Copyright (c) 2015+ All rights reserved.
 
 
@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 import com.nullcognition.yaatc.model.FeedItem;
 import com.nullcognition.yaatc.model.TextItem;

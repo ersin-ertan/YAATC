@@ -1,4 +1,4 @@
-package com.nullcognition.yaatc;
+package com.nullcognition.yaatc.view.fragment;
 // ersin 14/10/15 Copyright (c) 2015+ All rights reserved.
 
 
@@ -15,10 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nullcognition.yaatc.R;
+import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 import com.nullcognition.yaatc.model.FeedItem;
 import com.nullcognition.yaatc.model.ImageItem;
 import com.nullcognition.yaatc.model.TextItem;
+import com.nullcognition.yaatc.view.adapter.FeedAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

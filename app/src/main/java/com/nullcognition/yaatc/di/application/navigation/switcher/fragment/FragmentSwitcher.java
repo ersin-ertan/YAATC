@@ -57,7 +57,8 @@ public class FragmentSwitcher implements Switcher{
 
 	}
 
-	public void starter(final BaseActivity baseActivity, final int containerId, final Class<? extends BaseFragment> startFragment){
+	public void starter(final BaseActivity baseActivity, final int containerId, Class<? extends BaseFragment> startFragment){
+		if(currentFragment != null){ startFragment = currentFragment.getClass(); }
 		currentFragment = switchAnimator.animateSwitch(baseActivity.getSupportFragmentManager().beginTransaction(),
 				containerId, startFragment, false);
 		currentFragmentTag = startFragment.getSimpleName();
