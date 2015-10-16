@@ -5,11 +5,11 @@ import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.text.InputType;
 import android.view.View;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
+import com.nullcognition.yaatc.view.fragment.FeedFragment;
 
 import dagger.Module;
 import dagger.Provides;
@@ -38,7 +38,9 @@ import dagger.Provides;
 								        .setAction(baseFragment.getResources().getString(R.string.scroll_home),
 										        new View.OnClickListener(){
 											        @Override public void onClick(final View v){
-												        Toast.makeText(baseFragment.getActivity(), "RecyclerViewSmoothScroll", Toast.LENGTH_SHORT).show();
+												        if(baseFragment instanceof FeedFragment){
+													        ((FeedFragment) baseFragment).smoothScollToTop();
+												        }
 											        }
 										        }).show();
 							}

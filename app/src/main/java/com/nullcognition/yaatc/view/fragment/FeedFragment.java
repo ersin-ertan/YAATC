@@ -38,9 +38,9 @@ public class FeedFragment extends BaseFragment{
 	public static final String TAG = FeedFragment.class.getSimpleName();
 
 	FeedAdapter adapter;
-	@Inject                  MaterialDialog.Builder materialDialog;
-	@Bind(R.id.recyclerView) RecyclerView           recyclerView;
-	@Bind(R.id.toolbar)      Toolbar                toolbar;
+	@Inject                         MaterialDialog.Builder materialDialog;
+	@Bind(R.id.recyclerView) public RecyclerView           recyclerView;
+	@Bind(R.id.toolbar)             Toolbar                toolbar;
 	@OnClick(R.id.fab) void fab(){
 		materialDialog.show();
 	}
@@ -78,6 +78,10 @@ public class FeedFragment extends BaseFragment{
 		recyclerView.setItemAnimator(new DefaultItemAnimator());
 	}
 
+	public void smoothScollToTop(){
+		if(recyclerView != null){ recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1); }
+	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
 		menuInflater.inflate(R.menu.menu_feed, menu);
@@ -91,9 +95,10 @@ public class FeedFragment extends BaseFragment{
 			navigator.switchFragment(this, LoginFragment.class);
 			return true;
 		}
-//		if(id == R.id.action_home){
-//			recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-//			return true; }
+		if(id == R.id.action_home){
+			recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
