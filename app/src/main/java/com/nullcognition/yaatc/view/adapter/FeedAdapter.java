@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.hannesdorfmann.adapterdelegates.AdapterDelegatesManager;
-import com.nullcognition.yaatc.model.FeedItem;
-import com.nullcognition.yaatc.model.TextItem;
+import com.nullcognition.yaatc.model.item.AdItem;
+import com.nullcognition.yaatc.model.item.FeedItem;
+import com.nullcognition.yaatc.model.item.TextItem;
+import com.nullcognition.yaatc.view.adapter.adapterdelegate.AdItemAdapterDelegate;
 import com.nullcognition.yaatc.view.adapter.adapterdelegate.ImageItemAdapterDelegate;
 import com.nullcognition.yaatc.view.adapter.adapterdelegate.TextItemAdapterDelegate;
 
@@ -18,6 +20,7 @@ public class FeedAdapter extends RecyclerView.Adapter{
 
 	private AdapterDelegatesManager<List<FeedItem>> delegatesManager;
 	private List<FeedItem>                          items;
+	private long tweetCount = 0L;
 
 	public FeedAdapter(Activity activity, List<FeedItem> items){
 		this.items = items;
@@ -26,9 +29,14 @@ public class FeedAdapter extends RecyclerView.Adapter{
 		delegatesManager.addDelegate(new TextItemAdapterDelegate(activity, 0));
 		delegatesManager.addDelegate(new ImageItemAdapterDelegate(activity, 1));
 
+		delegatesManager.addDelegate(new AdItemAdapterDelegate(activity, 2));
+
 	}
 
-	public void addItem(String text){ items.add(new TextItem(text)); }
+	public void addItem(String text){
+		items.add(new TextItem(text));
+		if(++tweetCount % 3 == 0){ items.add(new AdItem());}
+	}
 
 	@Override public int getItemViewType(int position){
 		return delegatesManager.getItemViewType(items, position);

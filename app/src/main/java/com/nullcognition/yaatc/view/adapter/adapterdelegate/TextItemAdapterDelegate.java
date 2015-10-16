@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
 import com.nullcognition.yaatc.R;
-import com.nullcognition.yaatc.model.FeedItem;
-import com.nullcognition.yaatc.model.TextItem;
+import com.nullcognition.yaatc.model.item.FeedItem;
+import com.nullcognition.yaatc.model.item.TextItem;
 
 import java.util.List;
 

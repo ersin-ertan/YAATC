@@ -12,26 +12,8 @@ public class MainActivity extends BaseActivity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
-
 		navigator.startFragment(this, R.id.activity_main_rootLayout, LoginFragment.class);
 	}
-
-	@Override protected void onStart(){
-		super.onStart();
-//		navigator.switchFragment(navigator.getCurrentFragment(), FeedFragment.class);
-	}
-	@Override protected void onPostCreate(final Bundle savedInstanceState){
-		super.onPostCreate(savedInstanceState);
-
-//		navigator.switchFragment(replace, FeedFragment.class);
-	}
-
-	//	@Override public void onActivityResult(int requestCode, int resultCode, Intent data){
-//		super.onActivityResult(requestCode, resultCode, data);
-//		Fragment fragment = getSupportFragmentManager().findFragmentByTag(navigator.getCurrentFragmentTag());
-//		if(fragment != null){
-//			fragment.onActivityResult(requestCode, resultCode, data); }
-//	}
 
 	@Override protected int getActivityLayout(){ return R.layout.activity_main; }
 

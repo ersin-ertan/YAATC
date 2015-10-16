@@ -5,6 +5,7 @@ package com.nullcognition.yaatc.view.fragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -18,9 +19,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
-import com.nullcognition.yaatc.model.FeedItem;
-import com.nullcognition.yaatc.model.ImageItem;
-import com.nullcognition.yaatc.model.TextItem;
+import com.nullcognition.yaatc.model.item.FeedItem;
+import com.nullcognition.yaatc.model.item.ImageItem;
+import com.nullcognition.yaatc.model.item.TextItem;
 import com.nullcognition.yaatc.view.adapter.FeedAdapter;
 
 import java.util.ArrayList;
@@ -73,8 +74,8 @@ public class FeedFragment extends BaseFragment{
 		recyclerView.setLayoutManager(sglm);
 		adapter = new FeedAdapter(activity, getAnimals()); // TODO remove this and replace with a persistable object
 		recyclerView.setAdapter(adapter);
-//		recyclerView.setNestedScrollingEnabled(true); true by default
 		recyclerView.setHasFixedSize(false);
+		recyclerView.setItemAnimator(new DefaultItemAnimator());
 	}
 
 	@Override

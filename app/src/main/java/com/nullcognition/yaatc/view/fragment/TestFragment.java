@@ -10,8 +10,8 @@ import android.view.View;
 
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
-import com.nullcognition.yaatc.model.FeedItem;
-import com.nullcognition.yaatc.model.TextItem;
+import com.nullcognition.yaatc.model.item.FeedItem;
+import com.nullcognition.yaatc.model.item.TextItem;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -45,6 +45,8 @@ dependencies{
 	compile 'com.android.support:percent:23.1.0'
 	compile 'com.android.support:support-annotations:23.1.0'
 
+	compile 'com.google.code.gson:gson:2.4'
+
 	compile('com.afollestad.material-dialogs:core:0.8.3.0@aar'){
 		transitive = true
 	}
@@ -60,8 +62,6 @@ dependencies{
 
 	compile 'com.sora.util.akatsuki:akatsuki-api:0.0.3'
 	apt 'com.sora.util.akatsuki:akatsuki-compiler:0.0.3'
-
-	compile 'com.google.code.gson:gson:2.4'
 
 	compile 'com.github.bumptech.glide:glide:3.6.1'
 

@@ -1,5 +1,5 @@
 package com.nullcognition.yaatc.view.adapter.adapterdelegate;
-// ersin 14/10/15 Copyright (c) 2015+ All rights reserved.
+// ersin 15/10/15 Copyright (c) 2015+ All rights reserved.
 
 
 import android.app.Activity;
@@ -10,54 +10,49 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
 import com.nullcognition.yaatc.R;
+import com.nullcognition.yaatc.model.item.AdItem;
 import com.nullcognition.yaatc.model.item.FeedItem;
-import com.nullcognition.yaatc.model.item.ImageItem;
 
 import java.util.List;
 
-import me.grantland.widget.AutofitTextView;
-
-public class ImageItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
+public class AdItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 
 	private LayoutInflater inflater;
 	private Activity       activity;
 
-	public ImageItemAdapterDelegate(Activity activity, int viewType){
+	public AdItemAdapterDelegate(Activity activity, int viewType){
 		super(viewType);
 		this.activity = activity;
 		inflater = activity.getLayoutInflater();
 	}
 
 	@Override public boolean isForViewType(@NonNull List<FeedItem> items, int position){
-		return items.get(position) instanceof ImageItem;
+		return items.get(position) instanceof AdItem;
 	}
 
 	@NonNull @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent){
-		return new ImageItemViewHolder(inflater.inflate(R.layout.item_image, parent, false));
+		return new AdItemViewHolder(inflater.inflate(R.layout.item_ad, parent, false));
 	}
 
 	@Override public void onBindViewHolder(@NonNull List<FeedItem> items, int position,
 	                                       @NonNull RecyclerView.ViewHolder holder){
+		AdItemViewHolder vh     = (AdItemViewHolder) holder;
+		AdItem           adItem = (AdItem) items.get(position);
 
-		ImageItemViewHolder vh        = (ImageItemViewHolder) holder;
-		ImageItem           imageItem = (ImageItem) items.get(position);
 
-		vh.text.setText(imageItem.text);
-		Glide.with(activity).load(imageItem.imageUrl).fitCenter().into(vh.image);
+//		vh.image(adItem.); // src set in xml
 	}
 
-	static class ImageItemViewHolder extends RecyclerView.ViewHolder{
+	static class AdItemViewHolder extends RecyclerView.ViewHolder{
 
-		public AutofitTextView text;
-		public ImageView       image;
+		public ImageView image;
 
-		public ImageItemViewHolder(View itemView){
+		public AdItemViewHolder(View itemView){
 			super(itemView);
-			text = (AutofitTextView) itemView.findViewById(R.id.item_text);
-			image = (ImageView) itemView.findViewById(R.id.item_image);
+			image = (ImageView) itemView.findViewById(R.id.ad_view);
+
 		}
 	}
 }
