@@ -15,6 +15,7 @@ import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 import com.nullcognition.yaatc.view.fragment.presenter.FeedPresenter;
+import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 
 import javax.inject.Inject;
 
@@ -25,6 +26,7 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 
 	public static final String TAG = FeedFragment.class.getSimpleName();
 
+	@Inject                         StorIOSQLite           storIOSQLite;
 	@Inject                         MaterialDialog.Builder materialDialog;
 	@Bind(R.id.recyclerView) public RecyclerView           recyclerView;
 	@Bind(R.id.toolbar)             Toolbar                toolbar;
@@ -38,7 +40,7 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 		setHasOptionsMenu(true);
 	}
 
-	@Override protected void createPresenter(){ basePresenter = new FeedPresenter(this);}
+	@Override protected void createPresenter(){ basePresenter = new FeedPresenter(this, storIOSQLite);}
 
 	@Override public void onViewCreated(final View view, final Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
@@ -68,9 +70,9 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 		}
 	}
 
-	public void onEvent(TweetHandler.Tweet tweet){ basePresenter.addTweetToFeed(tweet); }
+	public void onEvent(TweetHandler.TweetEvent tweetEvent){ basePresenter.addTweetToFeed(tweetEvent); }
 
-	public void onEvent(TweetHandler.DeleteTweet deleteTweet){ basePresenter.deteletTweet(deleteTweet); }
+	public void onEvent(TweetHandler.DeleteTweetEvent deleteTweetEvent){ basePresenter.deleteTweet(deleteTweetEvent); }
 
 	@Override protected void injectSelf(){ fragmentComponent.inject(this); }
 

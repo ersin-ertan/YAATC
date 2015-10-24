@@ -9,26 +9,26 @@ public class TweetHandler{
 	public TweetHandler(){}
 
 	public static void setText(final String text){
-		EventBus.getDefault().post(new Tweet(text));
+		EventBus.getDefault().post(new TweetEvent(text));
 	}
 
 	public static void deleteTweet(final int itemPositionInList){
-		EventBus.getDefault().post(new DeleteTweet(itemPositionInList));
+		EventBus.getDefault().post(new DeleteTweetEvent(itemPositionInList));
 	}
 
-	public static class Tweet{
+	public static class TweetEvent{
 
 		public String text;
 
-		Tweet(String s){ text = s;}
+		TweetEvent(String s){ text = s;}
 	}
 
 
-	public static class DeleteTweet{
+	public static class DeleteTweetEvent{
 
 		public int itemPositionInList;
 
-		DeleteTweet(int pil){itemPositionInList = pil;}
+		DeleteTweetEvent(int pil){itemPositionInList = pil;}
 	}
 
 }

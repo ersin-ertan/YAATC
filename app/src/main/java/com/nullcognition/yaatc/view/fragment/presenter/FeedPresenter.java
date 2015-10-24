@@ -9,25 +9,29 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
+import com.nullcognition.yaatc.model.Tweet;
 import com.nullcognition.yaatc.model.item.FeedItem;
-import com.nullcognition.yaatc.model.item.ImageItem;
 import com.nullcognition.yaatc.model.item.TextItem;
 import com.nullcognition.yaatc.view.adapter.FeedAdapter;
 import com.nullcognition.yaatc.view.fragment.FeedFragment;
+import com.pushtorefresh.storio.sqlite.StorIOSQLite;
+import com.pushtorefresh.storio.sqlite.queries.Query;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FeedPresenter extends BasePresenter{
 
-	FeedAdapter adapter;
+	FeedAdapter  adapter;
+	StorIOSQLite storIOSQLite;
 
-	public FeedPresenter(final FeedFragment feedFragment){
+	public FeedPresenter(final FeedFragment feedFragment, final StorIOSQLite storIOSQLite){
 		super(feedFragment);
+		this.storIOSQLite = storIOSQLite;
 	}
 
 	public void initToolbar(final Toolbar toolbar){
@@ -47,7 +51,7 @@ public class FeedPresenter extends BasePresenter{
 		StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(columnSpanCount, LinearLayoutManager.VERTICAL);
 		sglm.setReverseLayout(true);
 		recyclerView.setLayoutManager(sglm);
-		adapter = new FeedAdapter(baseFrargment.getActivity(), getAnimals()); // TODO remove this and replace with a persistable object
+		adapter = new FeedAdapter(baseFrargment.getActivity(), getFeedItems());
 		recyclerView.setAdapter(adapter);
 		recyclerView.setHasFixedSize(false);
 		recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -58,39 +62,58 @@ public class FeedPresenter extends BasePresenter{
 		if(recyclerView != null){ recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1); }
 	}
 
-	private List<FeedItem> getAnimals(){
-		String         twitterUrl = "https://pbs.twimg.com/profile_images/615680132565504000/EIpgSD2K.png";
-		List<FeedItem> animals    = new ArrayList<>();
 
-		animals.add(new ImageItem("Collie", twitterUrl));
-		animals.add(new TextItem("American Curl"));
-		animals.add(new TextItem("Baliness"));
-//		animals.add(new TextItem("Bengal"));
-//		animals.add(new TextItem("Corat"));
-//		animals.add(new TextItem("Manx"));
-//		animals.add(new TextItem("Nebelung"));
-//		animals.add(new TextItem("Aidi"));
-//		animals.add(new TextItem("Chinook"));
-//		animals.add(new TextItem("Appenzeller"));
-//		animals.add(new ImageItem("Collie", twitterUrl));
-//		animals.add(new TextItem("Manx"));
-//		animals.add(new TextItem("Nebelung"));
-//		animals.add(new TextItem("Aidi"));
-//		animals.add(new TextItem("Chinook"));
-//		animals.add(new TextItem("Appenzeller"));
-//		animals.add(new TextItem("Collie"));
-
-		Collections.shuffle(animals);
-		return animals;
+	public List<Tweet> getTweets(){
+		return storIOSQLite
+				.get()
+				.listOfObjects(Tweet.class)
+				.withQuery(Query.builder()
+				                .table("tweets")
+				                .build())
+				.prepare()
+				.executeAsBlocking();
 	}
 
-	public void addTweetToFeed(final TweetHandler.Tweet tweet){
-		adapter.addItem(tweet.text);
-		adapter.notifyDataSetChanged();
+	private List<FeedItem> getFeedItems(){
+		List<FeedItem> feedItems = new ArrayList<>();
+		List<Tweet>    tweets    = getTweets();
+
+		for(Tweet t : tweets){
+			feedItems.add(new TextItem(t.content()));
+		}
+
+
+//		String         twitterUrl = "https://pbs.twimg.com/profile_images/615680132565504000/EIpgSD2K.png";
+//		feedItems.add(new ImageItem("Collie", twitterUrl));
+//		feedItems.add(new TextItem("American Curl"));
+//		feedItems.add(new TextItem("Baliness"));
+
+
+//		Collections.shuffle(feedItems);
+		return feedItems;
 	}
 
-	public void deteletTweet(final TweetHandler.DeleteTweet deleteTweet){
-		adapter.deleteItem(deleteTweet.itemPositionInList);
+	public void addTweetToFeed(final TweetHandler.TweetEvent tweetEvent){
+		adapter.addItem(tweetEvent.text);
 		adapter.notifyDataSetChanged();
+		storIOSQLite
+				.put()
+				.object(Tweet.newTweet(tweetEvent.text))
+				.prepare()
+				.executeAsBlocking();
+	}
+
+	public void deleteTweet(final TweetHandler.DeleteTweetEvent deleteTweetEvent){
+		adapter.deleteItem(deleteTweetEvent.itemPositionInList);
+		adapter.notifyDataSetChanged();
+		Tweet  t    = getTweets().get(deleteTweetEvent.itemPositionInList);
+		String text = t.content();
+
+		storIOSQLite
+				.delete()
+				.object(t)
+				.prepare()
+				.executeAsBlocking();
+		Toast.makeText(baseFrargment.getContext(), text, Toast.LENGTH_SHORT).show();
 	}
 }
