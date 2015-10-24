@@ -18,6 +18,7 @@ import com.nullcognition.yaatc.view.fragment.presenter.FeedPresenter;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -25,9 +26,10 @@ import butterknife.OnClick;
 public class FeedFragment extends BaseFragment<FeedPresenter>{
 
 	public static final String TAG = FeedFragment.class.getSimpleName();
+	public static final String TWEET = "tweet";
 
 	@Inject                         StorIOSQLite           storIOSQLite;
-	@Inject                         MaterialDialog.Builder materialDialog;
+	@Inject @Named(TWEET)    MaterialDialog.Builder materialDialog;
 	@Bind(R.id.recyclerView) public RecyclerView           recyclerView;
 	@Bind(R.id.toolbar)             Toolbar                toolbar;
 
@@ -49,7 +51,7 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 		basePresenter.initRecyclerView(recyclerView);
 	}
 
-	public void smoothScollToTop(){ basePresenter.smoothScrollToTop(recyclerView); }
+	public void smoothScrollToTop(){ basePresenter.smoothScrollToTop(recyclerView); }
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){ menuInflater.inflate(R.menu.menu_feed, menu); }
@@ -62,7 +64,7 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 				return true;
 			}
 			case R.id.action_home:{
-				smoothScollToTop();
+				smoothScrollToTop();
 				return true;
 			}
 			default:

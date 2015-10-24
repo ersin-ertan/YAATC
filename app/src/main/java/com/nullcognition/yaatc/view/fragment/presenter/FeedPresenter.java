@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
@@ -26,7 +25,7 @@ import java.util.List;
 
 public class FeedPresenter extends BasePresenter{
 
-	FeedAdapter  adapter;
+	FeedAdapter adapter;
 	StorIOSQLite storIOSQLite;
 
 	public FeedPresenter(final FeedFragment feedFragment, final StorIOSQLite storIOSQLite){
@@ -59,7 +58,9 @@ public class FeedPresenter extends BasePresenter{
 	}
 
 	public void smoothScrollToTop(RecyclerView recyclerView){
-		if(recyclerView != null){ recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1); }
+		if(recyclerView != null && adapter != null && adapter.getItemCount() > 0){
+			recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+		}
 	}
 
 
@@ -81,15 +82,6 @@ public class FeedPresenter extends BasePresenter{
 		for(Tweet t : tweets){
 			feedItems.add(new TextItem(t.content()));
 		}
-
-
-//		String         twitterUrl = "https://pbs.twimg.com/profile_images/615680132565504000/EIpgSD2K.png";
-//		feedItems.add(new ImageItem("Collie", twitterUrl));
-//		feedItems.add(new TextItem("American Curl"));
-//		feedItems.add(new TextItem("Baliness"));
-
-
-//		Collections.shuffle(feedItems);
 		return feedItems;
 	}
 
@@ -106,14 +98,15 @@ public class FeedPresenter extends BasePresenter{
 	public void deleteTweet(final TweetHandler.DeleteTweetEvent deleteTweetEvent){
 		adapter.deleteItem(deleteTweetEvent.itemPositionInList);
 		adapter.notifyDataSetChanged();
-		Tweet  t    = getTweets().get(deleteTweetEvent.itemPositionInList);
-		String text = t.content();
+		// double db calls, use query to get the exact based on position in list
+		Tweet t = getTweets().get(deleteTweetEvent.itemPositionInList);
+//		String text = t.content();
 
 		storIOSQLite
 				.delete()
 				.object(t)
 				.prepare()
 				.executeAsBlocking();
-		Toast.makeText(baseFrargment.getContext(), text, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(baseFrargment.getContext(), text, Toast.LENGTH_SHORT).show();
 	}
 }

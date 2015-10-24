@@ -1,5 +1,6 @@
 package com.nullcognition.yaatc.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.nullcognition.yaatc.R;
@@ -19,5 +20,12 @@ public class MainActivity extends BaseActivity{
 
 	@Override protected void injectSelf(){ activityComponent.inject(this); }
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 
+		// Pass the activity result to the fragment, which will then pass the result to the login
+		// button.
+		navigator.getCurrentFragment().onActivityResult(requestCode, resultCode, data);
+	}
 }

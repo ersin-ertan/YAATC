@@ -3,7 +3,6 @@
           xmlns:android = "http://schemas.android.com/apk/res/android"
 	>
 
-	<uses-permission android:name = "android.permission.INTERNET"/>
 
 	<application
 		android:allowBackup = "true"
@@ -24,9 +23,7 @@
 				<category android:name = "android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-	    <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="eccf3fe4a83def0153578bfd243626f61fb2f060" />
+
     </application>
 
 </manifest>

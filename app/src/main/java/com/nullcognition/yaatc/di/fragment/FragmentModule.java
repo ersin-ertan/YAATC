@@ -11,6 +11,8 @@ import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.view.fragment.FeedFragment;
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -22,7 +24,8 @@ import dagger.Provides;
 
 	@Provides BaseFragment provideBaseFragment(){ return baseFragment; }
 
-	@Provides public MaterialDialog.Builder provideTwitterDialog(final BaseFragment baseFragment, final Context context){
+	@Provides @Named(FeedFragment.TWEET)
+	public MaterialDialog.Builder provideTwitterDialog(final BaseFragment baseFragment, final Context context){
 
 		return new MaterialDialog.Builder(context)
 				.title(R.string.app_name)
@@ -41,7 +44,7 @@ import dagger.Provides;
 										        new View.OnClickListener(){
 											        @Override public void onClick(final View v){
 												        if(baseFragment instanceof FeedFragment){
-													        ((FeedFragment) baseFragment).smoothScollToTop();
+													        ((FeedFragment) baseFragment).smoothScrollToTop();
 												        }
 											        }
 										        }).show();
@@ -50,6 +53,4 @@ import dagger.Provides;
 
 				);
 	}
-
-
 }

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.hannesdorfmann.adapterdelegates.AdapterDelegatesManager;
-import com.nullcognition.yaatc.model.item.AdItem;
 import com.nullcognition.yaatc.model.item.FeedItem;
 import com.nullcognition.yaatc.model.item.TextItem;
 import com.nullcognition.yaatc.view.adapter.adapterdelegate.AdItemAdapterDelegate;
@@ -35,7 +34,8 @@ public class FeedAdapter extends RecyclerView.Adapter{
 
 	public void addItem(String text){
 		items.add(new TextItem(text));
-		if(++tweetCount % 3 == 0){ items.add(new AdItem());}
+		// do not display ads
+//		if(++tweetCount % 3 == 0){ items.add(new AdItem());}
 	}
 
 	public void deleteItem(int itemPositionInList){

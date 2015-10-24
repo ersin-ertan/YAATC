@@ -103,4 +103,8 @@
 	<string name = "scroll_home">Scroll Home</string>
 	<string name = "delete">Delete</string>
 	<string name = "yes">Yes</string>
+	<string name = "are_you_connected">Are You Connected To The Internet?</string>
+	<string name = "login">Login</string>
+	<string name = "set_passkey">Set Passkey</string>
+	<string name = "unlock">Unlock</string>
 </resources>
