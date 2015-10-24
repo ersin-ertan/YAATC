@@ -70,6 +70,8 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 
 	public void onEvent(TweetHandler.Tweet tweet){ basePresenter.addTweetToFeed(tweet); }
 
+	public void onEvent(TweetHandler.DeleteTweet deleteTweet){ basePresenter.deteletTweet(deleteTweet); }
+
 	@Override protected void injectSelf(){ fragmentComponent.inject(this); }
 
 	@Override protected int getFragmentLayout(){return R.layout.fragment_feed; }

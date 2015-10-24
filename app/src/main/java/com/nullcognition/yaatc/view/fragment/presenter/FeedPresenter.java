@@ -65,20 +65,20 @@ public class FeedPresenter extends BasePresenter{
 		animals.add(new ImageItem("Collie", twitterUrl));
 		animals.add(new TextItem("American Curl"));
 		animals.add(new TextItem("Baliness"));
-		animals.add(new TextItem("Bengal"));
-		animals.add(new TextItem("Corat"));
-		animals.add(new TextItem("Manx"));
-		animals.add(new TextItem("Nebelung"));
-		animals.add(new TextItem("Aidi"));
-		animals.add(new TextItem("Chinook"));
-		animals.add(new TextItem("Appenzeller"));
-		animals.add(new ImageItem("Collie", twitterUrl));
-		animals.add(new TextItem("Manx"));
-		animals.add(new TextItem("Nebelung"));
-		animals.add(new TextItem("Aidi"));
-		animals.add(new TextItem("Chinook"));
-		animals.add(new TextItem("Appenzeller"));
-		animals.add(new TextItem("Collie"));
+//		animals.add(new TextItem("Bengal"));
+//		animals.add(new TextItem("Corat"));
+//		animals.add(new TextItem("Manx"));
+//		animals.add(new TextItem("Nebelung"));
+//		animals.add(new TextItem("Aidi"));
+//		animals.add(new TextItem("Chinook"));
+//		animals.add(new TextItem("Appenzeller"));
+//		animals.add(new ImageItem("Collie", twitterUrl));
+//		animals.add(new TextItem("Manx"));
+//		animals.add(new TextItem("Nebelung"));
+//		animals.add(new TextItem("Aidi"));
+//		animals.add(new TextItem("Chinook"));
+//		animals.add(new TextItem("Appenzeller"));
+//		animals.add(new TextItem("Collie"));
 
 		Collections.shuffle(animals);
 		return animals;
@@ -86,6 +86,11 @@ public class FeedPresenter extends BasePresenter{
 
 	public void addTweetToFeed(final TweetHandler.Tweet tweet){
 		adapter.addItem(tweet.text);
+		adapter.notifyDataSetChanged();
+	}
+
+	public void deteletTweet(final TweetHandler.DeleteTweet deleteTweet){
+		adapter.deleteItem(deleteTweet.itemPositionInList);
 		adapter.notifyDataSetChanged();
 	}
 }

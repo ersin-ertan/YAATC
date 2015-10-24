@@ -3,14 +3,18 @@ package com.nullcognition.yaatc.view.adapter.adapterdelegate;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
 import com.nullcognition.yaatc.R;
+import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.model.item.FeedItem;
 import com.nullcognition.yaatc.model.item.TextItem;
 
@@ -32,7 +36,7 @@ public class TextItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 	}
 
 	@NonNull @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent){
-		return new TextItemViewHolder(inflater.inflate(R.layout.item_text, parent, false));
+		return new TextItemViewHolder(inflater.inflate(R.layout.item_text, parent, false), inflater.getContext());
 	}
 
 	@Override public void onBindViewHolder(@NonNull List<FeedItem> items, int position,
@@ -41,16 +45,38 @@ public class TextItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 		TextItemViewHolder vh       = (TextItemViewHolder) holder;
 		TextItem           textItem = (TextItem) items.get(position);
 
-		vh.name.setText(textItem.text);
+		vh.text.setText(textItem.text);
+		vh.positionInList = position;
 	}
 
 	static class TextItemViewHolder extends RecyclerView.ViewHolder{
 
-		public AutofitTextView name;
+		public AutofitTextView text;
+		public int             positionInList;
 
-		public TextItemViewHolder(View itemView){
+		public TextItemViewHolder(View itemView, final Context context){
 			super(itemView);
-			name = (AutofitTextView) itemView.findViewById(R.id.item_text);
+			text = (AutofitTextView) itemView.findViewById(R.id.item_text);
+			itemView.setOnLongClickListener(new View.OnLongClickListener(){
+				                                @Override public boolean onLongClick(final View v){
+					                                new MaterialDialog.Builder(context)
+							                                .title(R.string.delete)
+							                                .content(text.getText())
+							                                .inputRangeRes(1, 140, R.color.colorPrimary)
+							                                .icon(context.getDrawable(android.R.drawable.ic_delete))
+							                                .positiveText(R.string.yes)
+							                                .onPositive(new MaterialDialog.SingleButtonCallback(){
+								                                @Override public void onClick(@NonNull final MaterialDialog materialDialog, @NonNull final DialogAction dialogAction){
+									                                TweetHandler.deleteTweet(positionInList);
+								                                }
+							                                }).show();
+
+
+					                                return true;
+				                                }
+			                                }
+
+			);
 		}
 	}
 }

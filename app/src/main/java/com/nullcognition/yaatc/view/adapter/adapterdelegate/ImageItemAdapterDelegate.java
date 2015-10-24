@@ -3,6 +3,7 @@ package com.nullcognition.yaatc.view.adapter.adapterdelegate;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
 import com.nullcognition.yaatc.R;
+import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.model.item.FeedItem;
 import com.nullcognition.yaatc.model.item.ImageItem;
 
@@ -36,7 +40,7 @@ public class ImageItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>
 	}
 
 	@NonNull @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent){
-		return new ImageItemViewHolder(inflater.inflate(R.layout.item_image, parent, false));
+		return new ImageItemViewHolder(inflater.inflate(R.layout.item_image, parent, false), inflater.getContext());
 	}
 
 	@Override public void onBindViewHolder(@NonNull List<FeedItem> items, int position,
@@ -46,6 +50,7 @@ public class ImageItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>
 		ImageItem           imageItem = (ImageItem) items.get(position);
 
 		vh.text.setText(imageItem.text);
+		vh.positionInList = position;
 		Glide.with(activity).load(imageItem.imageUrl).fitCenter().into(vh.image);
 	}
 
@@ -53,11 +58,33 @@ public class ImageItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>
 
 		public AutofitTextView text;
 		public ImageView       image;
+		public int positionInList;
 
-		public ImageItemViewHolder(View itemView){
+		public ImageItemViewHolder(View itemView, final Context context){
 			super(itemView);
 			text = (AutofitTextView) itemView.findViewById(R.id.item_text);
 			image = (ImageView) itemView.findViewById(R.id.item_image);
+
+			itemView.setOnLongClickListener(new View.OnLongClickListener(){
+				                                @Override public boolean onLongClick(final View v){
+					                                new MaterialDialog.Builder(context)
+							                                .title(R.string.delete)
+							                                .content(text.getText())
+							                                .inputRangeRes(1, 140, R.color.colorPrimary)
+							                                .icon(context.getDrawable(android.R.drawable.ic_delete))
+							                                .positiveText(R.string.yes)
+							                                .onPositive(new MaterialDialog.SingleButtonCallback(){
+								                                @Override public void onClick(@NonNull final MaterialDialog materialDialog, @NonNull final DialogAction dialogAction){
+									                                TweetHandler.deleteTweet(positionInList);
+								                                }
+							                                }).show();
+
+
+					                                return true;
+				                                }
+			                                }
+
+			);
 		}
 	}
 }

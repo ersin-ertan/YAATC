@@ -17,12 +17,12 @@ import dagger.Provides;
 @Module public class FragmentModule{
 
 	private final BaseFragment baseFragment;
+
 	public FragmentModule(final BaseFragment bf){ baseFragment = bf; }
 
 	@Provides BaseFragment provideBaseFragment(){ return baseFragment; }
 
-	@Provides public MaterialDialog.Builder provideTwitterDialog(final BaseFragment baseFragment, final Context context,
-	                                                             final TweetHandler tweetHandler){
+	@Provides public MaterialDialog.Builder provideTwitterDialog(final BaseFragment baseFragment, final Context context){
 
 		return new MaterialDialog.Builder(context)
 				.title(R.string.app_name)
@@ -33,7 +33,9 @@ import dagger.Provides;
 				.input(R.string.whats_happ, R.string.empty, new MaterialDialog.InputCallback(){
 							@Override
 							public void onInput(MaterialDialog dialog, CharSequence input){
-								tweetHandler.setText(String.valueOf(input));
+
+								TweetHandler.setText(String.valueOf(input));
+
 								Snackbar.make(baseFragment.getView(), baseFragment.getResources().getString(R.string.new_tweet), Snackbar.LENGTH_LONG)
 								        .setAction(baseFragment.getResources().getString(R.string.scroll_home),
 										        new View.OnClickListener(){

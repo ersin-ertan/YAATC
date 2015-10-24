@@ -38,6 +38,10 @@ public class FeedAdapter extends RecyclerView.Adapter{
 		if(++tweetCount % 3 == 0){ items.add(new AdItem());}
 	}
 
+	public void deleteItem(int itemPositionInList){
+		items.remove(itemPositionInList);
+	}
+
 	@Override public int getItemViewType(int position){
 		return delegatesManager.getItemViewType(items, position);
 	}

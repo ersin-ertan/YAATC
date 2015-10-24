@@ -101,4 +101,6 @@
 	<string name = "tweet_image">Tweet with Image</string>
 	<string name = "new_tweet">New Tweet</string>
 	<string name = "scroll_home">Scroll Home</string>
+	<string name = "delete">Delete</string>
+	<string name = "yes">Yes</string>
 </resources>
