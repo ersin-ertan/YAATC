@@ -11,20 +11,24 @@ import android.view.ViewGroup;
 
 import com.nullcognition.yaatc.di.activity.BaseActivity;
 import com.nullcognition.yaatc.di.application.navigation.Navigator;
+import com.nullcognition.yaatc.view.fragment.presenter.BasePresenter;
 import com.sora.util.akatsuki.Akatsuki;
 import com.sora.util.akatsuki.Retained;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
-public abstract class BaseFragment extends Fragment{
+public abstract class BaseFragment<P extends BasePresenter> extends Fragment{
 
 	@Retained      String    temp;
 	@Inject public Navigator navigator;
+	protected      P         basePresenter;
 
 
 	protected FragmentComponent fragmentComponent;
+
 	public FragmentComponent getFragmentComponent(){ return fragmentComponent; }
 
 	@Override public void onAttach(final Context context){
@@ -34,6 +38,13 @@ public abstract class BaseFragment extends Fragment{
 		injectSelf();
 	}
 
+	@Override public void onCreate(final Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		EventBus.getDefault().register(this);
+		createPresenter();
+	}
+
+	protected abstract void createPresenter();
 
 	protected void createFragmentComponent(){
 		if(fragmentComponent == null){
@@ -67,6 +78,7 @@ public abstract class BaseFragment extends Fragment{
 
 	@Override public void onDestroy(){
 		ButterKnife.unbind(this);
+		EventBus.getDefault().unregister(this);
 		((BaseActivity) getActivity()).releaseFragmentComponent();
 		// if the release is per the lifetime of the fragment
 		super.onDestroy();

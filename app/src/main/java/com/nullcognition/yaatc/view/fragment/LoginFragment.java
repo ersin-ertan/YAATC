@@ -4,10 +4,11 @@ package com.nullcognition.yaatc.view.fragment;
 
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
+import com.nullcognition.yaatc.view.fragment.presenter.LoginPresenter;
 
 import butterknife.OnClick;
 
-public class LoginFragment extends BaseFragment{
+public class LoginFragment extends BaseFragment<LoginPresenter>{
 
 	public static final String TAG = "LoginFragment";
 
@@ -15,10 +16,16 @@ public class LoginFragment extends BaseFragment{
 		navigator.switchFragment(this, FeedFragment.class);
 	}
 
+	public void onEvent(Event e){}
+
+	@Override protected void createPresenter(){ }
+
 	@Override protected void injectSelf(){
 		fragmentComponent.inject(this);
 	}
 
 	@Override protected int getFragmentLayout(){ return R.layout.fragment_login; }
+
+	public static class Event{ }
 
 }

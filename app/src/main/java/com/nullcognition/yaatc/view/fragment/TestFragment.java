@@ -19,9 +19,13 @@ import java.util.List;
 
 import butterknife.Bind;
 
-public class TestFragment extends BaseFragment{
+public class TestFragment<TestPresenter> extends BaseFragment{
 
 	public static final String TAG = TestFragment.class.getSimpleName();
+
+	@Override protected void createPresenter(){
+
+	}
 
 	@Override protected void injectSelf(){
 		fragmentComponent.inject(this);
