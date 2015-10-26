@@ -10,12 +10,6 @@ import android.view.View;
 
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
-import com.nullcognition.yaatc.model.item.FeedItem;
-import com.nullcognition.yaatc.model.item.TextItem;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import butterknife.Bind;
 
@@ -49,42 +43,42 @@ public class TestFragment<TestPresenter> extends BaseFragment{
 		initRecyclerView(activity);
 	}
 
-
-	private List<FeedItem> getAnimals(){
-		List<FeedItem> animals = new ArrayList<>();
-
-		animals.add(new TextItem(" snth teu esnh toeu  nhtoaeu snthoaeu  eu u asuhtnaosu thaouo aou snaoe us nthaoeus nhaoeu ouos nthaoeu snteu uaeouo aeoe ua ueoue ouoea  ee"));
-		animals.add(new TextItem("Baliness of the things that go in the night"));
-		animals.add(new TextItem("Bengal because the things that areth me most random are often the thingks nthat go"));
-		animals.add(new TextItem("Corat"));
-		animals.add(new TextItem("Manx"));
-		animals.add(new TextItem("Nebelung"));
-		animals.add(new TextItem("Aidi"));
-		animals.add(new TextItem("Chinook"));
-		animals.add(new TextItem("Appenzeller"));
-		animals.add(new TextItem("Collie"));
-		animals.add(new TextItem("American Curl"));
-		animals.add(new TextItem("Baliness"));
-		animals.add(new TextItem("Bengal"));
-		animals.add(new TextItem("Corat"));
-		animals.add(new TextItem("Manx"));
-		animals.add(new TextItem("Nebelung"));
-		animals.add(new TextItem("Aidi"));
-		animals.add(new TextItem("Chinook"));
-		animals.add(new TextItem("Appenzeller"));
-		animals.add(new TextItem("Collie"));
-		animals.add(new TextItem("American Curl"));
-		animals.add(new TextItem("Baliness"));
-		animals.add(new TextItem("Bengal"));
-		animals.add(new TextItem("Corat"));
-		animals.add(new TextItem("Manx"));
-		animals.add(new TextItem("Nebelung"));
-		animals.add(new TextItem("Aidi"));
-		animals.add(new TextItem("Chinook"));
-		animals.add(new TextItem("Appenzeller"));
-		animals.add(new TextItem("Collie"));
-
-		Collections.shuffle(animals);
-		return animals;
-	}
+//
+//	private List<FeedItem> getAnimals(){
+//		List<FeedItem> animals = new ArrayList<>();
+//
+//		animals.add(new TextItem(" snth teu esnh toeu  nhtoaeu snthoaeu  eu u asuhtnaosu thaouo aou snaoe us nthaoeus nhaoeu ouos nthaoeu snteu uaeouo aeoe ua ueoue ouoea  ee", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Baliness of the things that go in the night", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Bengal because the things that areth me most random are often the thingks nthat go", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Corat", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Manx", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Nebelung", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Aidi", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Chinook", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Appenzeller", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Collie", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("American Curl", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Baliness", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Bengal", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Corat", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Manx", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Nebelung", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Aidi", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Chinook", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Appenzeller", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Collie", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("American Curl", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Baliness", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Bengal", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Corat", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Manx", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Nebelung", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Aidi", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Chinook", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Appenzeller", tweetEvent.tweet.isStarred()));
+//		animals.add(new TextItem("Collie", tweetEvent.tweet.isStarred()));
+//
+//		Collections.shuffle(animals);
+//		return animals;
+//	}
 }

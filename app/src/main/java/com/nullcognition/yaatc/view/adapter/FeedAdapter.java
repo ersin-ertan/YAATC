@@ -32,8 +32,8 @@ public class FeedAdapter extends RecyclerView.Adapter{
 
 	}
 
-	public void addItem(String text){
-		items.add(new TextItem(text));
+	public void addItem(TextItem textItem){
+		items.add(textItem);
 		// do not display ads
 //		if(++tweetCount % 3 == 0){ items.add(new AdItem());}
 	}
@@ -56,5 +56,9 @@ public class FeedAdapter extends RecyclerView.Adapter{
 
 	@Override public int getItemCount(){
 		return items.size();
+	}
+
+	public void setStared(final int itemPositionInList, final boolean isStarred){
+		((TextItem) items.get(itemPositionInList)).isStarred = isStarred;
 	}
 }

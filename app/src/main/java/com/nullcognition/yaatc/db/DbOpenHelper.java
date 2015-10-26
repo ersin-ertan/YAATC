@@ -8,8 +8,10 @@ import android.support.annotation.NonNull;
 
 public class DbOpenHelper extends SQLiteOpenHelper{
 
+	public static final String DATABASE_NAME = "tweet_db";
+
 	public DbOpenHelper(@NonNull Context context){
-		super(context, "sample_db", null, 1);
+		super(context, DATABASE_NAME, null, 1);
 	}
 
 	@Override

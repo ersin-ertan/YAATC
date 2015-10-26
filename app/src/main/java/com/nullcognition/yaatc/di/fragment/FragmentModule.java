@@ -9,6 +9,7 @@ import android.view.View;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
+import com.nullcognition.yaatc.model.Tweet;
 import com.nullcognition.yaatc.view.fragment.FeedFragment;
 
 import javax.inject.Named;
@@ -37,7 +38,7 @@ import dagger.Provides;
 							@Override
 							public void onInput(MaterialDialog dialog, CharSequence input){
 
-								TweetHandler.setText(String.valueOf(input));
+								TweetHandler.sendTweet(Tweet.newTweet(String.valueOf(input), false));
 
 								Snackbar.make(baseFragment.getView(), baseFragment.getResources().getString(R.string.new_tweet), Snackbar.LENGTH_LONG)
 								        .setAction(baseFragment.getResources().getString(R.string.scroll_home),

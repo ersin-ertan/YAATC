@@ -18,6 +18,7 @@ import com.nullcognition.yaatc.model.item.TextItem;
 import com.nullcognition.yaatc.view.adapter.FeedAdapter;
 import com.nullcognition.yaatc.view.fragment.FeedFragment;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
+import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class FeedPresenter extends BasePresenter{
 
-	FeedAdapter adapter;
+	FeedAdapter  adapter;
 	StorIOSQLite storIOSQLite;
 
 	public FeedPresenter(final FeedFragment feedFragment, final StorIOSQLite storIOSQLite){
@@ -80,17 +81,18 @@ public class FeedPresenter extends BasePresenter{
 		List<Tweet>    tweets    = getTweets();
 
 		for(Tweet t : tweets){
-			feedItems.add(new TextItem(t.content()));
+			feedItems.add(new TextItem(t.content(), t.isStarred()));
 		}
 		return feedItems;
 	}
 
 	public void addTweetToFeed(final TweetHandler.TweetEvent tweetEvent){
-		adapter.addItem(tweetEvent.text);
+		TextItem textItem = new TextItem(tweetEvent.tweet.content(), tweetEvent.tweet.isStarred());
+		adapter.addItem(textItem);
 		adapter.notifyDataSetChanged();
 		storIOSQLite
 				.put()
-				.object(Tweet.newTweet(tweetEvent.text))
+				.object(tweetEvent.tweet)
 				.prepare()
 				.executeAsBlocking();
 	}
@@ -108,5 +110,20 @@ public class FeedPresenter extends BasePresenter{
 				.prepare()
 				.executeAsBlocking();
 //		Toast.makeText(baseFrargment.getContext(), text, Toast.LENGTH_SHORT).show();
+	}
+
+	public void setStarred(final TweetHandler.StarredEvent starredEvent){
+		Tweet t = getTweets().get(starredEvent.itemPositionInList);
+		t.toggleStarred();
+		adapter.setStared(starredEvent.itemPositionInList, starredEvent.isStarred);
+		adapter.notifyItemChanged(starredEvent.itemPositionInList);
+
+		PutResult pr = storIOSQLite
+				.put()
+				.object(t)
+				.prepare()
+				.executeAsBlocking();
+//		Toast.makeText(baseFrargment.getContext(), "PUT RESULT: " + pr.wasUpdated(), Toast.LENGTH_SHORT).show();
+		// working, bug was due to missing isStared assignment in teh TextItem class upon creation in getFeedItems()
 	}
 }

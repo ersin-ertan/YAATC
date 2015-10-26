@@ -7,20 +7,32 @@
 	xmlns:autofit = "http://schemas.android.com/apk/res-auto"
 	>
 
-	<!-- without image has 3 max lines-->
-	<me.grantland.widget.AutofitTextView
-		android:id = "@+id/item_text"
-		android:layout_height = "wrap_content"
-		android:layout_width = "match_parent"
-		android:maxLines = "3"
-		android:paddingBottom = "@dimen/fab_margin"
-		android:paddingEnd = "@dimen/fab_margin"
-		android:paddingStart = "@dimen/fab_margin"
-		android:paddingTop = "@dimen/fab_margin"
-		android:singleLine = "false"
-		android:textSize = "40sp"
-		autofit:minTextSize = "16sp"
-		autofit:paddingStart = "@dimen/fab_margin"
-		/>
+	<FrameLayout
+		android:layout_height = "match_parent" android:layout_width = "match_parent"
+		>
 
+		<ImageView
+			android:id="@+id/btn_star"
+			android:layout_width = "wrap_content" android:layout_height = "wrap_content"
+		    android:src="@android:drawable/btn_star_big_off"
+			android:layout_gravity = "right|bottom"
+			/>
+
+		<!-- without image has 3 max lines-->
+		<me.grantland.widget.AutofitTextView
+			android:id = "@+id/item_text"
+			android:layout_height = "wrap_content"
+			android:layout_width = "match_parent"
+			android:maxLines = "3"
+			android:paddingBottom = "@dimen/fab_margin"
+			android:paddingEnd = "@dimen/fab_margin"
+			android:paddingStart = "@dimen/fab_margin"
+			android:paddingTop = "@dimen/fab_margin"
+			android:singleLine = "false"
+			android:textSize = "40sp"
+			autofit:minTextSize = "16sp"
+			autofit:paddingStart = "@dimen/fab_margin"
+			/>
+
+	</FrameLayout>
 </android.support.v7.widget.CardView>

@@ -18,33 +18,38 @@ public class Tweet{
 	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_CONTENT)
 	String content;
 
+	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_STARRED)
+	boolean isStarred;
+
 	Tweet(){}
 
-	private Tweet(@Nullable Long id, @NonNull String content){
+	private Tweet(@Nullable Long id, @NonNull String content, boolean starred){
 		this.id = id;
 		this.content = content;
+		isStarred = starred;
 	}
 
 	@NonNull
-	public static Tweet newTweet(@Nullable Long id, @NonNull String content){
-		return new Tweet(id, content);
+	public static Tweet newTweet(@Nullable Long id, @NonNull String content, boolean starred){
+		return new Tweet(id, content, starred);
 	}
 
 	@NonNull
-	public static Tweet newTweet(@NonNull String content){
-		return new Tweet(null, content);
+	public static Tweet newTweet(@NonNull String content, boolean starred){
+		return new Tweet(null, content, starred);
 	}
 
 	@Nullable
-	public Long id(){
-		return id;
-	}
+	public Long id(){ return id; }
 
 
 	@NonNull
 	public String content(){
 		return content;
 	}
+
+	public boolean isStarred(){ return isStarred; }
+	public void toggleStarred(){ isStarred = !isStarred; }
 
 	@Override
 	public boolean equals(Object o){
@@ -54,6 +59,7 @@ public class Tweet{
 		Tweet tweet = (Tweet) o;
 
 		if(id != null ? !id.equals(tweet.id) : tweet.id != null){ return false; }
+		if(isStarred != tweet.isStarred){ return false; }
 		return content.equals(tweet.content);
 	}
 
@@ -61,6 +67,7 @@ public class Tweet{
 	public int hashCode(){
 		int result = id != null ? id.hashCode() : 0;
 		result = 31 * result + content.hashCode();
+//		result += isStarred ? 1 : 0; // could this hash modification be why the put operation are not referencing the same object?
 		return result;
 	}
 
@@ -69,6 +76,7 @@ public class Tweet{
 		return "Tweet{" +
 				"id=" + id +
 				", content='" + content + '\'' +
+				", starred=" + isStarred +
 				'}';
 	}
 }

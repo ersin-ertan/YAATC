@@ -25,11 +25,11 @@ import butterknife.OnClick;
 
 public class FeedFragment extends BaseFragment<FeedPresenter>{
 
-	public static final String TAG = FeedFragment.class.getSimpleName();
+	public static final String TAG   = FeedFragment.class.getSimpleName();
 	public static final String TWEET = "tweet";
 
 	@Inject                         StorIOSQLite           storIOSQLite;
-	@Inject @Named(TWEET)    MaterialDialog.Builder materialDialog;
+	@Inject @Named(TWEET)           MaterialDialog.Builder materialDialog;
 	@Bind(R.id.recyclerView) public RecyclerView           recyclerView;
 	@Bind(R.id.toolbar)             Toolbar                toolbar;
 
@@ -75,6 +75,8 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 	public void onEvent(TweetHandler.TweetEvent tweetEvent){ basePresenter.addTweetToFeed(tweetEvent); }
 
 	public void onEvent(TweetHandler.DeleteTweetEvent deleteTweetEvent){ basePresenter.deleteTweet(deleteTweetEvent); }
+
+	public void onEvent(TweetHandler.StarredEvent starredEvent){ basePresenter.setStarred(starredEvent);}
 
 	@Override protected void injectSelf(){ fragmentComponent.inject(this); }
 

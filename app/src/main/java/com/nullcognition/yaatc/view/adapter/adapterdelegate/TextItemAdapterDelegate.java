@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -46,6 +47,8 @@ public class TextItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 		TextItem           textItem = (TextItem) items.get(position);
 
 		vh.text.setText(textItem.text);
+		vh.isStarred = textItem.isStarred;
+		vh.setStarred();
 		vh.positionInList = position;
 	}
 
@@ -53,30 +56,51 @@ public class TextItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 
 		public AutofitTextView text;
 		public int             positionInList;
+		public boolean         isStarred;
+
+		public void setStarred(){
+			if(isStarred){
+				((ImageView) itemView.findViewById(R.id.btn_star)).setImageResource(android.R.drawable.btn_star_big_on);
+			}
+			else{
+				((ImageView) itemView.findViewById(R.id.btn_star)).setImageResource(android.R.drawable.btn_star_big_off);
+			}
+		}
 
 		public TextItemViewHolder(View itemView, final Context context){
 			super(itemView);
+			ImageView iv = ((ImageView) itemView.findViewById(R.id.btn_star));
+
+			iv.setOnClickListener(new View.OnClickListener(){
+				@Override public void onClick(final View v){
+					isStarred = !isStarred;
+					TweetHandler.setStar(isStarred, positionInList);
+				}
+			});
 			text = (AutofitTextView) itemView.findViewById(R.id.item_text);
-			itemView.setOnLongClickListener(new View.OnLongClickListener(){
-				                                @Override public boolean onLongClick(final View v){
-					                                new MaterialDialog.Builder(context)
-							                                .title(R.string.delete)
-							                                .content(text.getText())
-							                                .inputRangeRes(1, 140, R.color.colorPrimary)
-							                                .icon(context.getDrawable(android.R.drawable.ic_delete))
-							                                .positiveText(R.string.yes)
-							                                .onPositive(new MaterialDialog.SingleButtonCallback(){
-								                                @Override public void onClick(@NonNull final MaterialDialog materialDialog, @NonNull final DialogAction dialogAction){
-									                                TweetHandler.deleteTweet(positionInList);
-								                                }
-							                                }).show();
 
-
-					                                return true;
-				                                }
-			                                }
-
+			itemView.setOnLongClickListener(
+					new View.OnLongClickListener(){
+						@Override public boolean onLongClick(final View v){
+							new MaterialDialog.Builder(context)
+									.title(R.string.delete)
+									.content(text.getText())
+									.inputRangeRes(1, 140, R.color.colorPrimary)
+									.icon(context.getDrawable(android.R.drawable.ic_delete))
+									.positiveText(R.string.yes)
+									.onPositive(
+											new MaterialDialog.SingleButtonCallback(){
+												@Override public void onClick(@NonNull final MaterialDialog materialDialog,
+												                              @NonNull final DialogAction dialogAction){
+													TweetHandler.deleteTweet(positionInList);
+												}
+											}
+									).show();
+							return true;
+						}
+					}
 			);
 		}
+
 	}
 }

@@ -28,6 +28,7 @@ public class FragmentSwitcher implements Switcher{
 	private String currentFragmentTag;
 	public String getCurrentFragmentTag(){ return currentFragmentTag; }
 
+	// should be dynamically changeable
 	@Inject public FragmentSwitcher(@Named(FragmentAnimator.SLIDE_LEFT_RIGHT) FragmentSwitchAnimator switchAnimator){
 		this.switchAnimator = switchAnimator;
 	}
