@@ -3,6 +3,9 @@ package com.nullcognition.yaatc.view.fragment.presenter;
 
 
 import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
+import com.nullcognition.yaatc.db.DbLoader;
 import com.nullcognition.yaatc.model.Tweet;
 import com.nullcognition.yaatc.model.item.FeedItem;
 import com.nullcognition.yaatc.model.item.TextItem;
@@ -21,13 +25,13 @@ import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FeedPresenter extends BasePresenter{
 
 	FeedAdapter  adapter;
 	StorIOSQLite storIOSQLite;
+	private RecyclerView recyclerView;
 
 	public FeedPresenter(final FeedFragment feedFragment, final StorIOSQLite storIOSQLite){
 		super(feedFragment);
@@ -42,28 +46,39 @@ public class FeedPresenter extends BasePresenter{
 
 	}
 
-	public void initRecyclerView(RecyclerView recyclerView){
+	public void initRecyclerView(RecyclerView rc){
 		int columnSpanCount = 3;
 		if(baseFrargment.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
 			columnSpanCount = 2;
 		}
-
 		StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(columnSpanCount, LinearLayoutManager.VERTICAL);
 		sglm.setReverseLayout(true);
-		recyclerView.setLayoutManager(sglm);
-		adapter = new FeedAdapter(baseFrargment.getActivity(), getFeedItems());
-		recyclerView.setAdapter(adapter);
-		recyclerView.setHasFixedSize(false);
-		recyclerView.setItemAnimator(new DefaultItemAnimator());
-
+		rc.setLayoutManager(sglm);
+		recyclerView = rc;
+		getFeedItems();
 	}
+
+	private LoaderManager.LoaderCallbacks<List<FeedItem>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<FeedItem>>(){
+		@Override public Loader<List<FeedItem>> onCreateLoader(final int id, final Bundle args){
+			return new DbLoader(baseFrargment.getActivity().getApplicationContext(), storIOSQLite);
+		}
+
+		@Override public void onLoadFinished(final Loader<List<FeedItem>> loader, final List<FeedItem> data){
+
+			adapter = new FeedAdapter(baseFrargment.getActivity(), data);
+			recyclerView.setAdapter(adapter);
+			recyclerView.setHasFixedSize(false);
+			recyclerView.setItemAnimator(new DefaultItemAnimator());
+		}
+
+		@Override public void onLoaderReset(final Loader<List<FeedItem>> loader){}
+	};
 
 	public void smoothScrollToTop(RecyclerView recyclerView){
 		if(recyclerView != null && adapter != null && adapter.getItemCount() > 0){
 			recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
 		}
 	}
-
 
 	public List<Tweet> getTweets(){
 		return storIOSQLite
@@ -76,14 +91,8 @@ public class FeedPresenter extends BasePresenter{
 				.executeAsBlocking();
 	}
 
-	private List<FeedItem> getFeedItems(){
-		List<FeedItem> feedItems = new ArrayList<>();
-		List<Tweet>    tweets    = getTweets();
-
-		for(Tweet t : tweets){
-			feedItems.add(new TextItem(t.content(), t.isStarred()));
-		}
-		return feedItems;
+	private void getFeedItems(){
+		baseFrargment.getActivity().getSupportLoaderManager().initLoader(1, null, loaderCallbacks);
 	}
 
 	public void addTweetToFeed(final TweetHandler.TweetEvent tweetEvent){

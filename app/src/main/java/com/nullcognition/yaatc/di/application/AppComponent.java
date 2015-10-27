@@ -4,6 +4,7 @@ package com.nullcognition.yaatc.di.application;
 
 import com.nullcognition.yaatc.di.activity.ActivityComponent;
 import com.nullcognition.yaatc.di.activity.ActivityModule;
+import com.nullcognition.yaatc.di.application.database.DatabaseModule;
 import com.nullcognition.yaatc.di.application.navigation.NavigationModule;
 
 import javax.inject.Singleton;
@@ -11,7 +12,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { AppModule.class, NavigationModule.class }) public interface AppComponent{
+@Component(modules = { AppModule.class, NavigationModule.class, DatabaseModule.class }) public interface AppComponent{
 
 	ActivityComponent plus(ActivityModule mainActivityModule);
 
