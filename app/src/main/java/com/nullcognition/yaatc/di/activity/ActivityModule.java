@@ -5,12 +5,17 @@ package com.nullcognition.yaatc.di.activity;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.nullcognition.yaatc.view.activity.MainActivity;
+
 import dagger.Module;
 import dagger.Provides;
 
 @Module public class ActivityModule{
 
 	private final BaseActivity baseActivity;
+
 	public ActivityModule(BaseActivity a){baseActivity = a;}
 
 	//	@ActivityScope
@@ -20,5 +25,14 @@ import dagger.Provides;
 
 	@Provides public FragmentManager provideFragmentManager(BaseActivity baseActivity){
 		return baseActivity.getSupportFragmentManager();
+	}
+
+	@ActivityScope
+	@Provides GoogleApiClient provideGoogleApiClient(){
+		return new GoogleApiClient.Builder(baseActivity)
+				.addApi(LocationServices.API)
+				.addConnectionCallbacks((MainActivity) baseActivity)
+				.addOnConnectionFailedListener((MainActivity) baseActivity)
+				.build();
 	}
 }

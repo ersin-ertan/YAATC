@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -50,6 +51,7 @@ public class TextItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 		vh.isStarred = textItem.isStarred;
 		vh.setStarred();
 		vh.positionInList = position;
+		vh.location.setText(textItem.location);
 	}
 
 	static class TextItemViewHolder extends RecyclerView.ViewHolder{
@@ -57,6 +59,7 @@ public class TextItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 		public AutofitTextView text;
 		public int             positionInList;
 		public boolean         isStarred;
+		public TextView        location;
 
 		public void setStarred(){
 			if(isStarred){
@@ -70,6 +73,7 @@ public class TextItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 		public TextItemViewHolder(View itemView, final Context context){
 			super(itemView);
 			ImageView iv = ((ImageView) itemView.findViewById(R.id.btn_star));
+			location = ((TextView) itemView.findViewById(R.id.location_text));
 
 			iv.setOnClickListener(new View.OnClickListener(){
 				@Override public void onClick(final View v){

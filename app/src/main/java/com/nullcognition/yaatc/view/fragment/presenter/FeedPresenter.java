@@ -96,7 +96,8 @@ public class FeedPresenter extends BasePresenter{
 	}
 
 	public void addTweetToFeed(final TweetHandler.TweetEvent tweetEvent){
-		TextItem textItem = new TextItem(tweetEvent.tweet.content(), tweetEvent.tweet.isStarred());
+		Tweet    tweet    = tweetEvent.tweet;
+		TextItem textItem = new TextItem(tweet.content(), tweet.isStarred(), tweet.location());
 		adapter.addItem(textItem);
 		adapter.notifyDataSetChanged();
 		storIOSQLite

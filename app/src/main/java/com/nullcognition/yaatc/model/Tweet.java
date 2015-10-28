@@ -21,27 +21,30 @@ public class Tweet{
 	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_STARRED)
 	boolean isStarred;
 
+	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_LOCATION)
+	String location;
+
 	Tweet(){}
 
-	private Tweet(@Nullable Long id, @NonNull String content, boolean starred){
+	private Tweet(@Nullable Long id, @NonNull String content, boolean starred, String loc){
 		this.id = id;
 		this.content = content;
-		isStarred = starred;
+		this.isStarred = starred;
+		this.location = loc;
 	}
 
 	@NonNull
-	public static Tweet newTweet(@Nullable Long id, @NonNull String content, boolean starred){
-		return new Tweet(id, content, starred);
+	public static Tweet newTweet(@Nullable Long id, @NonNull String content, boolean starred, String location){
+		return new Tweet(id, content, starred, location);
 	}
 
 	@NonNull
-	public static Tweet newTweet(@NonNull String content, boolean starred){
-		return new Tweet(null, content, starred);
+	public static Tweet newTweet(@NonNull String content, boolean starred, String location){
+		return new Tweet(null, content, starred, location);
 	}
 
 	@Nullable
 	public Long id(){ return id; }
-
 
 	@NonNull
 	public String content(){
@@ -49,6 +52,9 @@ public class Tweet{
 	}
 
 	public boolean isStarred(){ return isStarred; }
+
+	public String location(){ return location; }
+
 	public void toggleStarred(){ isStarred = !isStarred; }
 
 	@Override
@@ -60,6 +66,9 @@ public class Tweet{
 
 		if(id != null ? !id.equals(tweet.id) : tweet.id != null){ return false; }
 		if(isStarred != tweet.isStarred){ return false; }
+		if(location != null ? !location.equals(tweet.location) : tweet.location != null){
+			return false;
+		}
 		return content.equals(tweet.content);
 	}
 
@@ -77,6 +86,7 @@ public class Tweet{
 				"id=" + id +
 				", content='" + content + '\'' +
 				", starred=" + isStarred +
+				", location=" + location +
 				'}';
 	}
 }

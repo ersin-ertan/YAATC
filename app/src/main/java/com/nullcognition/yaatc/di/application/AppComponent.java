@@ -2,6 +2,7 @@ package com.nullcognition.yaatc.di.application;
 // ersin 14/10/15 Copyright (c) 2015+ All rights reserved.
 
 
+import com.nullcognition.yaatc.db.provider.TweetContentProvider;
 import com.nullcognition.yaatc.di.activity.ActivityComponent;
 import com.nullcognition.yaatc.di.activity.ActivityModule;
 import com.nullcognition.yaatc.di.application.database.DatabaseModule;
@@ -16,4 +17,5 @@ import dagger.Component;
 
 	ActivityComponent plus(ActivityModule mainActivityModule);
 
+	void inject(TweetContentProvider tweetContentProvider);
 }

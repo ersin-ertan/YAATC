@@ -51,7 +51,7 @@ public class DbMethodHelper{
 		List<Tweet>    tweets    = getTweets(db);
 
 		for(Tweet t : tweets){
-			feedItems.add(new TextItem(t.content(), t.isStarred()));
+			feedItems.add(new TextItem(t.content(), t.isStarred(), t.location()));
 		}
 		return feedItems;
 	}

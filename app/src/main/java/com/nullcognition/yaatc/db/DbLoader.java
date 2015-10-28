@@ -34,7 +34,7 @@ public class DbLoader extends AsyncTaskLoader<List<FeedItem>>{
 		List<Tweet>    tweets    = DbMethodHelper.getTweets(db);
 
 		for(Tweet t : tweets){
-			feedItems.add(new TextItem(t.content(), t.isStarred()));
+			feedItems.add(new TextItem(t.content(), t.isStarred(), t.location()));
 		}
 		return feedItems;
 	}

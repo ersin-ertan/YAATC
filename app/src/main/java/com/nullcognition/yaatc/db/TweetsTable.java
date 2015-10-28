@@ -20,6 +20,9 @@ public class TweetsTable{
 	public static final String COLUMN_STARRED = "starred";
 
 	@NonNull
+	public static final String COLUMN_LOCATION = "location";
+
+	@NonNull
 	public static final Query QUERY_ALL = Query.builder()
 	                                           .table(TABLE)
 	                                           .build();
@@ -33,7 +36,8 @@ public class TweetsTable{
 		return "CREATE TABLE " + TABLE + "("
 				+ COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY, "
 				+ COLUMN_CONTENT + " TEXT NOT NULL,"
-				+ COLUMN_STARRED + " BOOLEAN NOT NULL"
+				+ COLUMN_STARRED + " BOOLEAN NOT NULL,"
+				+ COLUMN_LOCATION + " TEXT NOT NULL"
 				+ ");";
 	}
 }

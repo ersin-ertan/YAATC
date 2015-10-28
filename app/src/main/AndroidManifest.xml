@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package = "com.nullcognition.yaatc"
-          xmlns:android = "http://schemas.android.com/apk/res/android"
+<manifest
+	package = "com.nullcognition.yaatc"
+	xmlns:android = "http://schemas.android.com/apk/res/android"
 	>
+
+	<uses-permission
+		android:name = "ANDROID.PERMISSION.ACCESS_FINE_LOCATION"
+		/>
 
 
 	<application
@@ -24,6 +29,12 @@
 			</intent-filter>
 		</activity>
 
-    </application>
+		<provider
+			android:authorities = "com.pushtorefresh.storio.sample_provider"
+			android:exported = "false"
+			android:name = ".db.provider.TweetContentProvider"
+			/>
+
+	</application>
 
 </manifest>
