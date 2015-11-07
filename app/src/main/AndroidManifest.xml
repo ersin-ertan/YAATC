@@ -4,9 +4,8 @@
 	xmlns:android = "http://schemas.android.com/apk/res/android"
 	>
 
-	<uses-permission
-		android:name = "ANDROID.PERMISSION.ACCESS_FINE_LOCATION"
-		/>
+	<uses-permission android:name = "android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name = "android.permission.ACCESS_COARSE_LOCATION"/>
 
 
 	<application
@@ -30,7 +29,7 @@
 		</activity>
 
 		<provider
-			android:authorities = "com.pushtorefresh.storio.sample_provider"
+			android:authorities = "com.nullcognition.yaatc.db.provider.TweetContentProvider"
 			android:exported = "false"
 			android:name = ".db.provider.TweetContentProvider"
 			/>

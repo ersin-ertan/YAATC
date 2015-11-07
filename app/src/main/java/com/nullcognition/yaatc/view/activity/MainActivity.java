@@ -57,16 +57,19 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this); // still crashing
 	}
 
-	private void lastKnownUpdate(){
-		lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+	public void lastKnownUpdate(){
+		locationRequest = LocationRequest.create();
+		locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+		locationRequest.setInterval(1);
+		locationRequest.setNumUpdates(1);
+		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
 	}
 
 	public String getLastLocation(){
-		lastKnownUpdate();
 		if(lastLocation != null){
-			return "Lat:" + String.valueOf(lastLocation.getLatitude()) + ", Lon:" + String.valueOf(lastLocation.getLongitude());
+			return "Lat: " + String.valueOf(lastLocation.getLatitude()) + ", Lon: " + String.valueOf(lastLocation.getLongitude());
 		}
-		else{return "Unavailable";}
+		return "Unavailable";
 	}
 
 	@Override
@@ -78,9 +81,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 	@Override
 	public void onLocationChanged(Location location){
 		Log.i(TAG, location.toString());
-
-//		txtLat.setText(Double.toString(location.getLatitude()));
-//		txtLon.setText(Double.toString(location.getLongitude()));
+		lastLocation = location;
 	}
 
 

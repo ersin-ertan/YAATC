@@ -14,6 +14,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
+import com.nullcognition.yaatc.view.activity.MainActivity;
 import com.nullcognition.yaatc.view.fragment.presenter.FeedPresenter;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 
@@ -34,6 +35,8 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 	@Bind(R.id.toolbar)             Toolbar                toolbar;
 
 	@OnClick(R.id.fab) void fab(){
+		((MainActivity)getActivity()).lastKnownUpdate();
+		// update tweet location prior to the tweet send, to make up for the latency of gps/wifi finding the location
 		materialDialog.show();
 	}
 
