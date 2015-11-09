@@ -107,4 +107,5 @@
 	<string name = "login">Login</string>
 	<string name = "set_passkey">Set Passkey</string>
 	<string name = "unlock">Unlock</string>
+	<string name = "passkey_incorrect">Passkey Incorrect</string>
 </resources>

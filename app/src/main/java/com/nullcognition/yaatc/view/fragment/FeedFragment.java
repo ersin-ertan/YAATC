@@ -35,7 +35,7 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 	@Bind(R.id.toolbar)             Toolbar                toolbar;
 
 	@OnClick(R.id.fab) void fab(){
-		((MainActivity)getActivity()).lastKnownUpdate();
+		((MainActivity) getActivity()).lastKnownUpdate();
 		// update tweet location prior to the tweet send, to make up for the latency of gps/wifi finding the location
 		materialDialog.show();
 	}
