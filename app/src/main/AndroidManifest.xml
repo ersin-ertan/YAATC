@@ -29,7 +29,7 @@
 		</activity>
 
 		<provider
-			android:authorities = "com.nullcognition.yaatc.db.provider.TweetContentProvider"
+			android:authorities = "com.nullcognition.yaatc"
 			android:exported = "false"
 			android:name = ".db.provider.TweetContentProvider"
 			/>

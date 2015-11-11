@@ -16,7 +16,7 @@ import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 import com.nullcognition.yaatc.view.activity.MainActivity;
 import com.nullcognition.yaatc.view.fragment.presenter.FeedPresenter;
-import com.pushtorefresh.storio.sqlite.StorIOSQLite;
+import com.pushtorefresh.storio.contentresolver.StorIOContentResolver;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,7 +29,8 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 	public static final String TAG   = FeedFragment.class.getSimpleName();
 	public static final String TWEET = "tweet";
 
-	@Inject                         StorIOSQLite           storIOSQLite;
+	//	@Inject                         StorIOSQLite           storIOSQLite;
+	@Inject                         StorIOContentResolver  contentReslover;
 	@Inject @Named(TWEET)           MaterialDialog.Builder materialDialog;
 	@Bind(R.id.recyclerView) public RecyclerView           recyclerView;
 	@Bind(R.id.toolbar)             Toolbar                toolbar;
@@ -45,7 +46,10 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 		setHasOptionsMenu(true);
 	}
 
-	@Override protected void createPresenter(){ basePresenter = new FeedPresenter(this, storIOSQLite);}
+	@Override protected void createPresenter(){
+//		basePresenter = new FeedPresenter(this, storIOSQLite);
+		basePresenter = new FeedPresenter(this, contentReslover);
+	}
 
 	@Override public void onViewCreated(final View view, final Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);

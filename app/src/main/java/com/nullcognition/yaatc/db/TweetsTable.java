@@ -1,8 +1,10 @@
 package com.nullcognition.yaatc.db;
 // ersin 24/10/15 Copyright (c) 2015+ All rights reserved.
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.nullcognition.yaatc.db.provider.TweetContentProvider;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 
 public class TweetsTable{
@@ -26,6 +28,11 @@ public class TweetsTable{
 	public static final Query QUERY_ALL = Query.builder()
 	                                           .table(TABLE)
 	                                           .build();
+
+	public static final Uri TWEET_URI =
+			TweetContentProvider.BASE_CONTENT_URI.buildUpon()
+			                                     .appendPath(TABLE)
+			                                     .build();
 
 	private TweetsTable(){
 		throw new IllegalStateException("Metadata class");

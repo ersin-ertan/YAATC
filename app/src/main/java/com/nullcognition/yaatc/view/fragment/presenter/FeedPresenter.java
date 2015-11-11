@@ -16,14 +16,14 @@ import android.support.v7.widget.Toolbar;
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.db.DbLoader;
+import com.nullcognition.yaatc.db.TweetsTable;
 import com.nullcognition.yaatc.model.Tweet;
 import com.nullcognition.yaatc.model.item.FeedItem;
 import com.nullcognition.yaatc.model.item.TextItem;
 import com.nullcognition.yaatc.view.adapter.FeedAdapter;
 import com.nullcognition.yaatc.view.fragment.FeedFragment;
+import com.pushtorefresh.storio.contentresolver.StorIOContentResolver;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
-import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
-import com.pushtorefresh.storio.sqlite.queries.Query;
 
 import java.util.List;
 
@@ -31,11 +31,17 @@ public class FeedPresenter extends BasePresenter{
 
 	FeedAdapter  adapter;
 	StorIOSQLite storIOSQLite;
-	private RecyclerView recyclerView;
+	private RecyclerView          recyclerView;
+	private StorIOContentResolver contentResolver;
 
 	public FeedPresenter(final FeedFragment feedFragment, final StorIOSQLite storIOSQLite){
 		super(feedFragment);
 		this.storIOSQLite = storIOSQLite;
+	}
+
+	public FeedPresenter(final FeedFragment feedFragment, final StorIOContentResolver contentResolver){
+		super(feedFragment);
+		this.contentResolver = contentResolver;
 	}
 
 	public void initToolbar(final Toolbar toolbar){
@@ -60,7 +66,8 @@ public class FeedPresenter extends BasePresenter{
 
 	private LoaderManager.LoaderCallbacks<List<FeedItem>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<FeedItem>>(){
 		@Override public Loader<List<FeedItem>> onCreateLoader(final int id, final Bundle args){
-			return new DbLoader(baseFrargment.getActivity().getApplicationContext(), storIOSQLite);
+//			return new DbLoader(baseFrargment.getActivity().getApplicationContext(), storIOSQLite);
+			return new DbLoader(baseFrargment.getActivity().getApplicationContext(), contentResolver);
 		}
 
 		@Override public void onLoadFinished(final Loader<List<FeedItem>> loader, final List<FeedItem> data){
@@ -80,15 +87,30 @@ public class FeedPresenter extends BasePresenter{
 		}
 	}
 
+	// note the get requires the uri
+
 	public List<Tweet> getTweets(){
-		return storIOSQLite
-				.get()
-				.listOfObjects(Tweet.class)
-				.withQuery(Query.builder()
-				                .table("tweets")
-				                .build())
-				.prepare()
-				.executeAsBlocking();
+//		return storIOSQLite
+//				.get()
+//				.listOfObjects(Tweet.class)
+//				.withQuery(Query.builder()
+//				                .table("tweets")
+//				                .build())
+//				.prepare()
+//				.executeAsBlocking();
+
+		// remember that the Query class exists both in the contentReslover and the Sqlite implementation of storio, pick the
+		// right one for the specific use case
+		return contentResolver.get()
+		                      .listOfObjects(Tweet.class)
+		                      .withQuery(com.pushtorefresh.storio.contentresolver.queries.Query.builder()
+				                      .uri(TweetsTable.TWEET_URI)
+// if the where and args is excluded will the call get all the entries?
+//		                                                                                       .where("content = ?")
+//		                                                                                       .whereArgs("test")
+				                      .build())
+		                      .prepare()
+		                      .executeAsBlocking();
 	}
 
 	private void getFeedItems(){
@@ -100,11 +122,15 @@ public class FeedPresenter extends BasePresenter{
 		TextItem textItem = new TextItem(tweet.content(), tweet.isStarred(), tweet.location());
 		adapter.addItem(textItem);
 		adapter.notifyDataSetChanged();
-		storIOSQLite
-				.put()
-				.object(tweetEvent.tweet)
-				.prepare()
-				.executeAsBlocking();
+//		storIOSQLite
+//				.put()
+//				.object(tweetEvent.tweet)
+//				.prepare()
+//				.executeAsBlocking();
+		contentResolver.put()
+		               .object(tweetEvent.tweet)
+		               .prepare()
+		               .executeAsBlocking();
 	}
 
 	public void deleteTweet(final TweetHandler.DeleteTweetEvent deleteTweetEvent){
@@ -114,12 +140,16 @@ public class FeedPresenter extends BasePresenter{
 		Tweet t = getTweets().get(deleteTweetEvent.itemPositionInList);
 //		String text = t.content();
 
-		storIOSQLite
-				.delete()
-				.object(t)
+//		storIOSQLite
+//				.delete()
+//				.object(t)
+//				.prepare()
+//				.executeAsBlocking();
+		contentResolver.delete()
+				.object(t) // could have used a query based on the objects values
 				.prepare()
 				.executeAsBlocking();
-//		Toast.makeText(baseFrargment.getContext(), text, Toast.LENGTH_SHORT).show();
+
 	}
 
 	public void setStarred(final TweetHandler.StarredEvent starredEvent){
@@ -128,11 +158,15 @@ public class FeedPresenter extends BasePresenter{
 		adapter.setStared(starredEvent.itemPositionInList, starredEvent.isStarred);
 		adapter.notifyItemChanged(starredEvent.itemPositionInList);
 
-		PutResult pr = storIOSQLite
-				.put()
-				.object(t)
-				.prepare()
-				.executeAsBlocking();
+//		PutResult pr = storIOSQLite
+//				.put()
+//				.object(t)
+//				.prepare()
+//				.executeAsBlocking();
+		contentResolver.put()
+		               .object(t)
+		               .prepare()
+		               .executeAsBlocking();
 //		Toast.makeText(baseFrargment.getContext(), "PUT RESULT: " + pr.wasUpdated(), Toast.LENGTH_SHORT).show();
 		// working, bug was due to missing isStared assignment in teh TextItem class upon creation in getFeedItems()
 	}

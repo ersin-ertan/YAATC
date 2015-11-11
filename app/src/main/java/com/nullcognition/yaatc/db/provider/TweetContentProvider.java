@@ -7,34 +7,39 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.nullcognition.yaatc.db.DbOpenHelper;
 import com.nullcognition.yaatc.db.TweetsTable;
-
-import javax.inject.Inject;
 
 public class TweetContentProvider extends ContentProvider{
 
 	@NonNull
-	public static final String AUTHORITY = "com.nullcognition.yaatc.tweetContentProvider";
+	public static final String AUTHORITY        = "com.nullcognition.yaatc";
+	public static final Uri    BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
-	private static final String PATH_TWEETS             = "tweets";
-	private static final int    URI_MATCHER_CODE_TWEETS = 1;
+	private static final int URI_MATCHER_CODE_TWEETS = 1;
 
-	private static final UriMatcher URI_MATCHER = new UriMatcher(1);
+	private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
 	static{
-		URI_MATCHER.addURI(AUTHORITY, PATH_TWEETS, URI_MATCHER_CODE_TWEETS);
+		URI_MATCHER.addURI(AUTHORITY, TweetsTable.TWEET_URI.getPath(), URI_MATCHER_CODE_TWEETS);
 	}
 
-	@Inject
-	SQLiteOpenHelper sqLiteOpenHelper;
-
-	@Override
-	public boolean onCreate(){
+//	@Inject
+//	SQLiteOpenHelper sqliteOpenHelper;
+//
+//	@Override
+//	public boolean onCreate(){
 //		YAATCApp.get(getContext()).getAppComponent().inject(this);
+//		return true;
+//	}
+
+	private DbOpenHelper sqliteOpenHelper;
+
+	@Override public boolean onCreate(){
+		sqliteOpenHelper = new DbOpenHelper(getContext());
 		return true;
 	}
 
@@ -42,7 +47,7 @@ public class TweetContentProvider extends ContentProvider{
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
 		switch(URI_MATCHER.match(uri)){
 			case URI_MATCHER_CODE_TWEETS:
-				return sqLiteOpenHelper
+				return sqliteOpenHelper
 						.getReadableDatabase()
 						.query(
 								TweetsTable.TABLE,
@@ -70,7 +75,7 @@ public class TweetContentProvider extends ContentProvider{
 
 		switch(URI_MATCHER.match(uri)){
 			case URI_MATCHER_CODE_TWEETS:
-				insertedId = sqLiteOpenHelper
+				insertedId = sqliteOpenHelper
 						.getWritableDatabase()
 						.insert(
 								TweetsTable.TABLE,
@@ -96,7 +101,7 @@ public class TweetContentProvider extends ContentProvider{
 
 		switch(URI_MATCHER.match(uri)){
 			case URI_MATCHER_CODE_TWEETS:
-				numberOfRowsAffected = sqLiteOpenHelper
+				numberOfRowsAffected = sqliteOpenHelper
 						.getWritableDatabase()
 						.update(
 								TweetsTable.TABLE,
@@ -123,7 +128,7 @@ public class TweetContentProvider extends ContentProvider{
 
 		switch(URI_MATCHER.match(uri)){
 			case URI_MATCHER_CODE_TWEETS:
-				numberOfRowsDeleted = sqLiteOpenHelper
+				numberOfRowsDeleted = sqliteOpenHelper
 						.getWritableDatabase()
 						.delete(
 								TweetsTable.TABLE,
