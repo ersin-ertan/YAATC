@@ -60,6 +60,7 @@ public class LoginFragment extends BaseFragment<LoginPresenter> implements Googl
 					.input("Passkey Here", null, new MaterialDialog.InputCallback(){
 						@Override public void onInput(final MaterialDialog materialDialog, final CharSequence charSequence){
 							Paper.book().write(PASS, charSequence.toString());
+							navigator.switchFragment(LoginFragment.this, FeedFragment.class);
 						}
 					}).show();
 		}

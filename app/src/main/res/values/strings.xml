@@ -108,4 +108,5 @@
 	<string name = "set_passkey">Set Passkey</string>
 	<string name = "unlock">Unlock</string>
 	<string name = "passkey_incorrect">Passkey Incorrect</string>
+	<string name = "empty_view_text">Empty!</string>
 </resources>

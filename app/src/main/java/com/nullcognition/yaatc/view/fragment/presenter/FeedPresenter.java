@@ -2,6 +2,9 @@ package com.nullcognition.yaatc.view.fragment.presenter;
 // ersin 17/10/15 Copyright (c) 2015+ All rights reserved.
 
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -22,6 +25,7 @@ import com.nullcognition.yaatc.model.item.FeedItem;
 import com.nullcognition.yaatc.model.item.TextItem;
 import com.nullcognition.yaatc.view.adapter.FeedAdapter;
 import com.nullcognition.yaatc.view.fragment.FeedFragment;
+import com.nullcognition.yaatc.widget.WidgetProvider;
 import com.pushtorefresh.storio.contentresolver.StorIOContentResolver;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 
@@ -150,6 +154,18 @@ public class FeedPresenter extends BasePresenter{
 				.prepare()
 				.executeAsBlocking();
 
+		if(t.isStarred()){
+			Intent intent = new Intent(baseFrargment.getContext(), WidgetProvider.class);
+			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+			// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+			// since it seems the onUpdate() is only fired on that:
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(baseFrargment.getContext());
+			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(baseFrargment.getContext(), WidgetProvider.class));
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+			baseFrargment.getActivity().sendBroadcast(intent);
+
+			AppWidgetManager.getInstance(baseFrargment.getContext()).notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
+		}
 	}
 
 	public void setStarred(final TweetHandler.StarredEvent starredEvent){
@@ -167,7 +183,18 @@ public class FeedPresenter extends BasePresenter{
 		               .object(t)
 		               .prepare()
 		               .executeAsBlocking();
-//		Toast.makeText(baseFrargment.getContext(), "PUT RESULT: " + pr.wasUpdated(), Toast.LENGTH_SHORT).show();
+		if(t.isStarred()){
+			Intent intent = new Intent(baseFrargment.getContext(), WidgetProvider.class);
+			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+			// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+			// since it seems the onUpdate() is only fired on that:
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(baseFrargment.getContext());
+			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(baseFrargment.getContext(), WidgetProvider.class));
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+			baseFrargment.getActivity().sendBroadcast(intent);
+
+			AppWidgetManager.getInstance(baseFrargment.getContext()).notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
+		}
 		// working, bug was due to missing isStared assignment in teh TextItem class upon creation in getFeedItems()
 	}
 }
