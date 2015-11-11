@@ -44,10 +44,11 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
 
 		Cursor cursor = mContext.getContentResolver().query(TweetsTable.TWEET_URI, new String[]{ TweetsTable.COLUMN_CONTENT }, TweetsTable.COLUMN_STARRED, null, null);
 		// + " = " + "TRUE" for the column starred is not needed as the value is stored as a 0 or 1 and where value is sufficient to poll for true
+		mTweets.clear();
 		if(cursor != null){
 			int index = cursor.getColumnIndex(TweetsTable.COLUMN_CONTENT);
 			while(cursor.moveToNext()){
-				mTweets.add(Tweet.newTweet(cursor.getString(index), false, null));
+				mTweets.add(Tweet.newTweet(cursor.getString(index), true, null));
 			}
 			cursor.close();
 		}
@@ -113,10 +114,11 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
 
 		Cursor cursor = mContext.getContentResolver().query(TweetsTable.TWEET_URI, new String[]{ TweetsTable.COLUMN_CONTENT }, TweetsTable.COLUMN_STARRED, null, null);
 		// + " = " + "TRUE" for the column starred is not needed as the value is stored as a 0 or 1 and where value is sufficient to poll for true
+		mTweets.clear();
 		if(cursor != null){
 			int index = cursor.getColumnIndex(TweetsTable.COLUMN_CONTENT);
 			while(cursor.moveToNext()){
-				mTweets.add(Tweet.newTweet(cursor.getString(index), false, null));
+				mTweets.add(Tweet.newTweet(cursor.getString(index), true, null));
 			}
 			cursor.close();
 		}
