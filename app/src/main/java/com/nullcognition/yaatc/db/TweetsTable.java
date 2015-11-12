@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.nullcognition.yaatc.db.provider.TweetContentProvider;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 
+
 public class TweetsTable{
 
 	@NonNull
@@ -25,14 +26,18 @@ public class TweetsTable{
 	public static final String COLUMN_LOCATION = "location";
 
 	@NonNull
-	public static final Query QUERY_ALL = Query.builder()
-	                                           .table(TABLE)
-	                                           .build();
-
-	public static final Uri TWEET_URI =
+	public static final Query QUERY_ALL_SQ = Query.builder()
+	                                              .table(TABLE)
+	                                              .build();
+	public static final Uri   TWEET_URI    =
 			TweetContentProvider.BASE_CONTENT_URI.buildUpon()
 			                                     .appendPath(TABLE)
 			                                     .build();
+
+	@NonNull
+	public static final com.pushtorefresh.storio.contentresolver.queries.Query
+			QUERY_ALL_CR = com.pushtorefresh.storio.contentresolver.queries.Query.builder().uri(TWEET_URI).build();
+
 
 	private TweetsTable(){
 		throw new IllegalStateException("Metadata class");

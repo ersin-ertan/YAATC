@@ -4,10 +4,10 @@ package com.nullcognition.yaatc.model.item;
 
 public class TextItem extends Item{
 
-	public boolean isStarred;
+	public Integer isStarred;
 	public String location;
 
-	public TextItem(String text, final boolean stared, String loc){
+	public TextItem(String text, final Integer stared, String loc){
 		super(text);
 		isStarred = stared;
 		location = loc;

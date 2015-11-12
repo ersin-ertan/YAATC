@@ -58,7 +58,7 @@ public class FeedAdapter extends RecyclerView.Adapter{
 		return items.size();
 	}
 
-	public void setStared(final int itemPositionInList, final boolean isStarred){
+	public void setStared(final int itemPositionInList, final Integer isStarred){
 		((TextItem) items.get(itemPositionInList)).isStarred = isStarred;
 	}
 }

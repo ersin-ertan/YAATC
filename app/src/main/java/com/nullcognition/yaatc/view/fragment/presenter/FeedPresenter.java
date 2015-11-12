@@ -2,9 +2,6 @@ package com.nullcognition.yaatc.view.fragment.presenter;
 // ersin 17/10/15 Copyright (c) 2015+ All rights reserved.
 
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -25,7 +22,6 @@ import com.nullcognition.yaatc.model.item.FeedItem;
 import com.nullcognition.yaatc.model.item.TextItem;
 import com.nullcognition.yaatc.view.adapter.FeedAdapter;
 import com.nullcognition.yaatc.view.fragment.FeedFragment;
-import com.nullcognition.yaatc.widget.WidgetProvider;
 import com.pushtorefresh.storio.contentresolver.StorIOContentResolver;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 
@@ -50,15 +46,15 @@ public class FeedPresenter extends BasePresenter{
 
 	public void initToolbar(final Toolbar toolbar){
 		if(toolbar != null){
-			toolbar.setTitle(baseFrargment.getResources().getString(R.string.app_name_full));
-			((AppCompatActivity) baseFrargment.getActivity()).setSupportActionBar(toolbar);
+			toolbar.setTitle(baseFragment.getResources().getString(R.string.app_name_full));
+			((AppCompatActivity) baseFragment.getActivity()).setSupportActionBar(toolbar);
 		}
 
 	}
 
 	public void initRecyclerView(RecyclerView rc){
 		int columnSpanCount = 3;
-		if(baseFrargment.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+		if(baseFragment.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
 			columnSpanCount = 2;
 		}
 		StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(columnSpanCount, LinearLayoutManager.VERTICAL);
@@ -70,13 +66,13 @@ public class FeedPresenter extends BasePresenter{
 
 	private LoaderManager.LoaderCallbacks<List<FeedItem>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<FeedItem>>(){
 		@Override public Loader<List<FeedItem>> onCreateLoader(final int id, final Bundle args){
-//			return new DbLoader(baseFrargment.getActivity().getApplicationContext(), storIOSQLite);
-			return new DbLoader(baseFrargment.getActivity().getApplicationContext(), contentResolver);
+//			return new DbLoader(baseFragment.getActivity().getApplicationContext(), storIOSQLite);
+			return new DbLoader(baseFragment.getActivity().getApplicationContext(), contentResolver);
 		}
 
 		@Override public void onLoadFinished(final Loader<List<FeedItem>> loader, final List<FeedItem> data){
 
-			adapter = new FeedAdapter(baseFrargment.getActivity(), data);
+			adapter = new FeedAdapter(baseFragment.getActivity(), data);
 			recyclerView.setAdapter(adapter);
 			recyclerView.setHasFixedSize(false);
 			recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -94,31 +90,17 @@ public class FeedPresenter extends BasePresenter{
 	// note the get requires the uri
 
 	public List<Tweet> getTweets(){
-//		return storIOSQLite
-//				.get()
-//				.listOfObjects(Tweet.class)
-//				.withQuery(Query.builder()
-//				                .table("tweets")
-//				                .build())
-//				.prepare()
-//				.executeAsBlocking();
-
 		// remember that the Query class exists both in the contentReslover and the Sqlite implementation of storio, pick the
 		// right one for the specific use case
 		return contentResolver.get()
 		                      .listOfObjects(Tweet.class)
-		                      .withQuery(com.pushtorefresh.storio.contentresolver.queries.Query.builder()
-				                      .uri(TweetsTable.TWEET_URI)
-// if the where and args is excluded will the call get all the entries?
-//		                                                                                       .where("content = ?")
-//		                                                                                       .whereArgs("test")
-				                      .build())
+		                      .withQuery(TweetsTable.QUERY_ALL_CR)
 		                      .prepare()
 		                      .executeAsBlocking();
 	}
 
 	private void getFeedItems(){
-		baseFrargment.getActivity().getSupportLoaderManager().initLoader(1, null, loaderCallbacks);
+		baseFragment.getActivity().getSupportLoaderManager().initLoader(1, null, loaderCallbacks);
 	}
 
 	public void addTweetToFeed(final TweetHandler.TweetEvent tweetEvent){
@@ -144,57 +126,53 @@ public class FeedPresenter extends BasePresenter{
 		Tweet t = getTweets().get(deleteTweetEvent.itemPositionInList);
 //		String text = t.content();
 
-//		storIOSQLite
-//				.delete()
-//				.object(t)
-//				.prepare()
-//				.executeAsBlocking();
 		contentResolver.delete()
 				.object(t) // could have used a query based on the objects values
 				.prepare()
 				.executeAsBlocking();
 
-		if(t.isStarred()){
-			Intent intent = new Intent(baseFrargment.getContext(), WidgetProvider.class);
-			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-			// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-			// since it seems the onUpdate() is only fired on that:
-			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(baseFrargment.getContext());
-			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(baseFrargment.getContext(), WidgetProvider.class));
-			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-			baseFrargment.getActivity().sendBroadcast(intent);
-
-			AppWidgetManager.getInstance(baseFrargment.getContext()).notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
-		}
+//		if(t.isStarred()){
+//			Intent intent = new Intent(baseFragment.getContext(), WidgetProvider.class);
+//			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+//			// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+//			// since it seems the onUpdate() is only fired on that:
+//			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(baseFragment.getContext());
+//			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(baseFragment.getContext(), WidgetProvider.class));
+//			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+//			baseFragment.getActivity().sendBroadcast(intent);
+//
+//			AppWidgetManager.getInstance(baseFragment.getContext()).notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
+//		}
 	}
 
 	public void setStarred(final TweetHandler.StarredEvent starredEvent){
-		Tweet t = getTweets().get(starredEvent.itemPositionInList);
-		t.toggleStarred();
+		List<Tweet> list  = getTweets();
+		Tweet       tweet = list.get(starredEvent.itemPositionInList);
+		tweet.toggleStarred();
 		adapter.setStared(starredEvent.itemPositionInList, starredEvent.isStarred);
 		adapter.notifyItemChanged(starredEvent.itemPositionInList);
 
-//		PutResult pr = storIOSQLite
-//				.put()
-//				.object(t)
-//				.prepare()
-//				.executeAsBlocking();
+		// trying to find if this is what calls the provider thus ensure that the value of starred is correctly changed. As of now the isStarred value is the provider
+		// content values is always true, and not changing to false
+
 		contentResolver.put()
-		               .object(t)
+		               .object(tweet)
 		               .prepare()
 		               .executeAsBlocking();
-		if(t.isStarred()){
-			Intent intent = new Intent(baseFrargment.getContext(), WidgetProvider.class);
-			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-			// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-			// since it seems the onUpdate() is only fired on that:
-			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(baseFrargment.getContext());
-			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(baseFrargment.getContext(), WidgetProvider.class));
-			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-			baseFrargment.getActivity().sendBroadcast(intent);
 
-			AppWidgetManager.getInstance(baseFrargment.getContext()).notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
-		}
+
+//		if(t.isStarred()){
+//			Intent intent = new Intent(baseFragment.getContext(), WidgetProvider.class);
+//			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+//			// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+//			// since it seems the onUpdate() is only fired on that:
+//			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(baseFragment.getContext());
+//			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(baseFragment.getContext(), WidgetProvider.class));
+//			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+//			baseFragment.getActivity().sendBroadcast(intent);
+//
+//			AppWidgetManager.getInstance(baseFragment.getContext()).notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
+//		}
 		// working, bug was due to missing isStared assignment in teh TextItem class upon creation in getFeedItems()
 	}
 }

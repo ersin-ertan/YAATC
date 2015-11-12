@@ -19,14 +19,14 @@ public class Tweet{
 	String content;
 
 	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_STARRED)
-	boolean isStarred;
+	Integer isStarred;
 
 	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_LOCATION)
 	String location;
 
 	Tweet(){}
 
-	private Tweet(@Nullable Long id, @NonNull String content, boolean starred, String loc){
+	private Tweet(@Nullable Long id, @NonNull String content, Integer starred, String loc){
 		this.id = id;
 		this.content = content;
 		this.isStarred = starred;
@@ -34,12 +34,12 @@ public class Tweet{
 	}
 
 	@NonNull
-	public static Tweet newTweet(@Nullable Long id, @NonNull String content, boolean starred, String location){
+	public static Tweet newTweet(@Nullable Long id, @NonNull String content, Integer starred, String location){
 		return new Tweet(id, content, starred, location);
 	}
 
 	@NonNull
-	public static Tweet newTweet(@NonNull String content, boolean starred, String location){
+	public static Tweet newTweet(@NonNull String content, Integer starred, String location){
 		return new Tweet(null, content, starred, location);
 	}
 
@@ -51,11 +51,14 @@ public class Tweet{
 		return content;
 	}
 
-	public boolean isStarred(){ return isStarred; }
+	public Integer isStarred(){ return isStarred; }
 
 	public String location(){ return location; }
 
-	public void toggleStarred(){ isStarred = !isStarred; }
+	public void toggleStarred(){
+		if(isStarred == 1){ isStarred = 0; }
+		else{ isStarred = 1; }
+	}
 
 	@Override
 	public boolean equals(Object o){
@@ -65,7 +68,7 @@ public class Tweet{
 		Tweet tweet = (Tweet) o;
 
 		if(id != null ? !id.equals(tweet.id) : tweet.id != null){ return false; }
-		if(isStarred != tweet.isStarred){ return false; }
+		if(!isStarred.equals(tweet.isStarred)){ return false; }
 		if(location != null ? !location.equals(tweet.location) : tweet.location != null){
 			return false;
 		}
@@ -85,7 +88,7 @@ public class Tweet{
 		return "Tweet{" +
 				"id=" + id +
 				", content='" + content + '\'' +
-				", starred=" + isStarred +
+				", starred=" + isStarred.toString() +
 				", location=" + location +
 				'}';
 	}

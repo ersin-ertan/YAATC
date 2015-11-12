@@ -36,8 +36,8 @@ public class TweetMeta{
 			return UpdateQuery.builder()
 			                  .uri(TweetsTable.TWEET_URI)
 			                  .where(TweetsTable.COLUMN_ID + " = ?")
-			                  .whereArgs(tweet.id())
-			                  .build();
+					.whereArgs(tweet.id()) // this is what will change in the update
+					.build();
 		}
 
 		@NonNull
@@ -63,7 +63,7 @@ public class TweetMeta{
 			return Tweet.newTweet(
 					cursor.getLong(cursor.getColumnIndexOrThrow(TweetsTable.COLUMN_ID)),
 					cursor.getString(cursor.getColumnIndexOrThrow(TweetsTable.COLUMN_CONTENT)),
-					cursor.getString(cursor.getColumnIndexOrThrow(TweetsTable.COLUMN_STARRED)).equals("True"),
+					cursor.getInt(cursor.getColumnIndexOrThrow(TweetsTable.COLUMN_STARRED)), // .equals("true"), // was True
 					cursor.getString(cursor.getColumnIndexOrThrow(TweetsTable.COLUMN_LOCATION))
 			);
 		}

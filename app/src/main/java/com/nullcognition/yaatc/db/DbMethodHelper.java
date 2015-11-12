@@ -40,7 +40,7 @@ public class DbMethodHelper{
 		return db.get()
 		         .listOfObjects(Tweet.class)
 		         .withQuery(Query.builder()
-		                         .table("tweets")
+		                         .table(TweetsTable.TABLE)
 		                         .build())
 		         .prepare()
 		         .executeAsBlocking();

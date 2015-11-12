@@ -18,7 +18,7 @@ public class TweetHandler{
 		EventBus.getDefault().post(new DeleteTweetEvent(itemPositionInList));
 	}
 
-	public static void setStar(boolean isStarred, int pos){
+	public static void setStar(final Integer isStarred, final int pos){
 		EventBus.getDefault().post(new StarredEvent(isStarred, pos));
 	}
 
@@ -40,10 +40,10 @@ public class TweetHandler{
 
 	public static class StarredEvent{
 
-		public final boolean isStarred;
+		public final Integer isStarred;
 		public final int     itemPositionInList;
 
-		public StarredEvent(boolean starred, int pos){
+		public StarredEvent(final Integer starred, final int pos){
 			isStarred = starred;
 			itemPositionInList = pos;
 		}

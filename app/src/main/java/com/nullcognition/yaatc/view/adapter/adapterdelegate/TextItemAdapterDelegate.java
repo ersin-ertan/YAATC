@@ -58,11 +58,11 @@ public class TextItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 
 		public AutofitTextView text;
 		public int             positionInList;
-		public boolean         isStarred;
+		public Integer         isStarred;
 		public TextView        location;
 
 		public void setStarred(){
-			if(isStarred){
+			if(isStarred.equals(1)){
 				((ImageView) itemView.findViewById(R.id.btn_star)).setImageResource(android.R.drawable.btn_star_big_on);
 			}
 			else{
@@ -77,7 +77,8 @@ public class TextItemAdapterDelegate extends AbsAdapterDelegate<List<FeedItem>>{
 
 			iv.setOnClickListener(new View.OnClickListener(){
 				@Override public void onClick(final View v){
-					isStarred = !isStarred;
+					if(isStarred.equals(0)){ isStarred = 1; }
+					else{ isStarred = 0; }
 					TweetHandler.setStar(isStarred, positionInList);
 				}
 			});

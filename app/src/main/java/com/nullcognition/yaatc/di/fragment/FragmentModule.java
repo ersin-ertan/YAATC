@@ -40,7 +40,7 @@ import dagger.Provides;
 							@Override
 							public void onInput(MaterialDialog dialog, CharSequence input){
 
-								TweetHandler.sendTweet(Tweet.newTweet(String.valueOf(input), false, ((MainActivity) baseActivity).getLastLocation()));
+								TweetHandler.sendTweet(Tweet.newTweet(String.valueOf(input), 0, ((MainActivity) baseActivity).getLastLocation()));
 
 								Snackbar.make(baseFragment.getView(), baseFragment.getResources().getString(R.string.new_tweet), Snackbar.LENGTH_LONG)
 								        .setAction(baseFragment.getResources().getString(R.string.scroll_home),

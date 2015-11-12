@@ -6,9 +6,9 @@ import com.nullcognition.yaatc.di.fragment.BaseFragment;
 
 public abstract class BasePresenter{
 
-	protected BaseFragment baseFrargment;
+	protected BaseFragment baseFragment;
 
 	public BasePresenter(BaseFragment bf){
-		baseFrargment = bf;
+		baseFragment = bf;
 	}
 }
