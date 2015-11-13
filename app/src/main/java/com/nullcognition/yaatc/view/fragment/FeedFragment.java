@@ -11,6 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.api.TweetHandler;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
@@ -20,6 +24,7 @@ import com.pushtorefresh.storio.contentresolver.StorIOContentResolver;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Provider;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -29,16 +34,18 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 	public static final String TAG   = FeedFragment.class.getSimpleName();
 	public static final String TWEET = "tweet";
 
-	//	@Inject                         StorIOSQLite           storIOSQLite;
-	@Inject                         StorIOContentResolver  contentReslover;
-	@Inject @Named(TWEET)           MaterialDialog.Builder materialDialog;
-	@Bind(R.id.recyclerView) public RecyclerView           recyclerView;
-	@Bind(R.id.toolbar)             Toolbar                toolbar;
+	@Inject                                         StorIOContentResolver    contentResolver;
+	@Inject @Named(TWEET)                           Provider<MaterialDialog> materialDialog;
+	@Inject @Named(LoginFragment.LOGIN_GAPI_CLIENT) GoogleApiClient          googleApiClient;
+
+	@Bind(R.id.recyclerView) RecyclerView recyclerView;
+	@Bind(R.id.toolbar)      Toolbar      toolbar;
 
 	@OnClick(R.id.fab) void fab(){
 		((MainActivity) getActivity()).lastKnownUpdate();
-		// update tweet location prior to the tweet send, to make up for the latency of gps/wifi finding the location
-		materialDialog.show();
+		materialDialog.get().show();
+		// update tweet location prior to the tweet send,
+		// to make up for the latency of gps/wifi finding the location
 	}
 
 	@Override public void onCreate(final Bundle savedInstanceState){
@@ -46,10 +53,7 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 		setHasOptionsMenu(true);
 	}
 
-	@Override protected void createPresenter(){
-//		basePresenter = new FeedPresenter(this, storIOSQLite);
-		basePresenter = new FeedPresenter(this, contentReslover);
-	}
+	@Override protected void createPresenter(){ basePresenter = new FeedPresenter(this, contentResolver); }
 
 	@Override public void onViewCreated(final View view, final Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
@@ -67,7 +71,12 @@ public class FeedFragment extends BaseFragment<FeedPresenter>{
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
 			case R.id.action_logout:{
-				navigator.switchFragment(this, LoginFragment.class);
+				Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+						new ResultCallback<Status>(){
+							@Override public void onResult(Status status){
+								navigator.switchFragment(FeedFragment.this, LoginFragment.class);
+							}
+						});
 				return true;
 			}
 			case R.id.action_home:{
