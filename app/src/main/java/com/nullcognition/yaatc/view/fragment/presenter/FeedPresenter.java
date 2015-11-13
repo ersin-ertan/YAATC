@@ -5,6 +5,7 @@ package com.nullcognition.yaatc.view.fragment.presenter;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -94,67 +95,81 @@ public class FeedPresenter extends BasePresenter{
 	}
 
 	private void getFeedItems(){
-		baseFragment.getActivity().getSupportLoaderManager().initLoader(1, null, loaderCallbacks);
+		baseFragment.getActivity()
+		            .getSupportLoaderManager()
+		            .initLoader(1, null, loaderCallbacks);
 	}
 
 	public void addTweetToFeed(final TweetHandler.TweetEvent tweetEvent){
-		Tweet    tweet    = tweetEvent.tweet;
-		TextItem textItem = new TextItem(tweet.content(), tweet.isStarred(), tweet.location());
+		final Tweet tweet    = tweetEvent.tweet;
+		TextItem    textItem = new TextItem(tweet.content(), tweet.isStarred(), tweet.location());
 		adapter.addItem(textItem);
 		adapter.notifyDataSetChanged();
 
-		contentResolver.put()
-		               .object(tweetEvent.tweet)
-		               .prepare()
-		               .executeAsBlocking();
+		new AsyncTask<Void, Void, Void>(){
+
+			@Override protected Void doInBackground(final Void... params){
+				contentResolver.put()
+				               .object(tweet)
+				               .prepare()
+				               .executeAsBlocking();
+				return null;
+			}
+		}.execute();
 	}
 
 	public void deleteTweet(final TweetHandler.DeleteTweetEvent deleteTweetEvent){
 		adapter.deleteItem(deleteTweetEvent.itemPositionInList);
 		adapter.notifyDataSetChanged();
 		// double db calls, use query to get the exact based on position in list
-		Tweet tweet = getTweets().get(deleteTweetEvent.itemPositionInList);
 
-		contentResolver.delete()
-		               .object(tweet)
-		               .prepare()
-		               .executeAsBlocking();
+		new AsyncTask<Void, Void, Void>(){
 
-		updateWidgets();
+			@Override protected Void doInBackground(final Void... params){
+
+				Tweet tweet = getTweets().get(deleteTweetEvent.itemPositionInList);
+				contentResolver.delete()
+				               .object(tweet)
+				               .prepare()
+				               .executeAsBlocking();
+				return null;
+			}
+
+			@Override protected void onPostExecute(final Void aVoid){
+				super.onPostExecute(aVoid);
+				updateWidgets();
+			}
+		}.execute();
 	}
 
 	public void setStarred(final TweetHandler.StarredEvent starredEvent){
-		List<Tweet> list  = getTweets();
-		Tweet       tweet = list.get(starredEvent.itemPositionInList);
-		tweet.toggleStarred();
-		adapter.setStared(starredEvent.itemPositionInList, starredEvent.isStarred);
-		adapter.notifyItemChanged(starredEvent.itemPositionInList);
 
-		contentResolver.put()
-		               .object(tweet)
-		               .prepare()
-		               .executeAsBlocking();
+		new AsyncTask<Void, Void, Void>(){
 
-		updateWidgets();
+			@Override protected Void doInBackground(final Void... params){
+				List<Tweet> list  = getTweets();
+				Tweet       tweet = list.get(starredEvent.itemPositionInList);
+				tweet.toggleStarred();
+
+				contentResolver.put()
+				               .object(tweet)
+				               .prepare()
+				               .executeAsBlocking();
+				return null;
+			}
+
+			@Override protected void onPostExecute(final Void aVoid){
+				super.onPostExecute(aVoid);
+				adapter.setStared(starredEvent.itemPositionInList, starredEvent.isStarred);
+				adapter.notifyItemChanged(starredEvent.itemPositionInList);
+				updateWidgets();
+			}
+		}.execute();
 	}
 
 	private void updateWidgets(){
-			AppWidgetManager awm = AppWidgetManager.getInstance(baseFragment.getContext());
-			int[] appWidgetIds = awm.getAppWidgetIds(new ComponentName(baseFragment.getContext(), StackWidgetProvider.class));
-			awm.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
+		AppWidgetManager awm          = AppWidgetManager.getInstance(baseFragment.getContext());
+		int[]            appWidgetIds = awm.getAppWidgetIds(new ComponentName(baseFragment.getContext(), StackWidgetProvider.class));
+		awm.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
 	}
 }
-
-//		if(t.isStarred()){
-//			Intent intent = new Intent(baseFragment.getContext(), WidgetProvider.class);
-//			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-//			// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-//			// since it seems the onUpdate() is only fired on that:
-//			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(baseFragment.getContext());
-//			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(baseFragment.getContext(), WidgetProvider.class));
-//			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-//			baseFragment.getActivity().sendBroadcast(intent);
-//
-//			AppWidgetManager.getInstance(baseFragment.getContext()).notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
-//		}
-// working, bug was due to missing isStared assignment in teh TextItem class upon creation in getFeedItems()
