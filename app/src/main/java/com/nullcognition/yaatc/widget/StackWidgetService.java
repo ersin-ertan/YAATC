@@ -28,82 +28,66 @@ public class StackWidgetService extends RemoteViewsService{
 
 class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
 
-	private static int              count       = 0;
-	private        List<WidgetItem> widgetItems = new ArrayList<WidgetItem>();
+	private List<WidgetItem> widgetItems = new ArrayList<WidgetItem>();
 	private Context context;
 	private int     appWidgetId;
 
 	public StackRemoteViewsFactory(Context context, Intent intent){
 		this.context = context;
-		appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-				AppWidgetManager.INVALID_APPWIDGET_ID);
+		appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 	}
 
-	public void onCreate(){
-		// In onCreate() you setup any connections / cursors to your data source. Heavy lifting,
-		// for example downloading or creating content etc, should be deferred to onDataSetChanged()
-		// or getViewAt(). Taking more than 20 seconds in this call will result in an ANR.
+	public void onCreate(){ updateWidgets(); }
+
+	private void updateWidgets(){
+
+		Cursor cursor = createCursor();
+
+		widgetItems.clear();
+		if(cursor != null && cursor.getCount() > 0){
+			while(cursor.moveToNext()){
+				widgetItems.add(
+						new WidgetItem(cursor.getString(
+								cursor.getColumnIndexOrThrow(TweetsTable.COLUMN_CONTENT)
+						))
+				);
+			}
+		}
+		if(cursor != null){ cursor.close(); }
+	}
+
+	private Cursor createCursor(){
 
 		ContentResolver contentResolver = context.getContentResolver();
-		Cursor cursor = contentResolver.query(
+
+		return contentResolver.query(
 				TweetsTable.TWEET_URI,
 				new String[]{ TweetsTable.COLUMN_CONTENT },
 				TweetsTable.COLUMN_STARRED + " = ?",
 				new String[]{ "1" },
 				null
 		);
-
-		if(cursor != null && cursor.getCount() > 0){
-			count = cursor.getCount();
-			while(cursor.moveToNext()){
-				widgetItems.add(
-						new WidgetItem(
-								cursor.getString(
-										cursor.getColumnIndexOrThrow(TweetsTable.COLUMN_CONTENT))));
-			}
-		}
-		if(cursor != null){
-			cursor.close();
-		}
-	}
-
-	public void onDestroy(){
-		// In onDestroy() you should tear down anything that was setup for your data source,
-		// eg. cursors, connections, etc.
-		widgetItems.clear();
-	}
-
-	public int getCount(){
-		return count;
 	}
 
 	public RemoteViews getViewAt(int position){
-		// position will always range from 0 to getCount() - 1.
-		// We construct a remote views item based on our widget item xml file, and set the
-		// text based on the position.
+
 		RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
 		rv.setTextViewText(R.id.widget_item, widgetItems.get(position).text);
-		// Next, we set a fill-intent which will be used to fill-in the pending intent template
-		// which is set on the collection view in StackWidgetProvider.
+
 		Bundle extras = new Bundle();
 		extras.putInt(StackWidgetProvider.EXTRA_ITEM, position);
 		Intent fillInIntent = new Intent();
 		fillInIntent.putExtras(extras);
 		rv.setOnClickFillInIntent(R.id.widget_item, fillInIntent);
-		// You can do heaving lifting in here, synchronously. For example, if you need to
-		// process an image, fetch something from the network, etc., it is ok to do it here,
-		// synchronously. A loading view will show up in lieu of the actual contents in the
-		// interim.
 
-			// Return the remote views object.
 		return rv;
 	}
 
-	public RemoteViews getLoadingView(){
-		// You can create a custom loading view (for instance when getViewAt() is slow.) If you
-		// return null here, you will get the default loading view.
-		return null;
-	}
+	public void onDestroy(){ widgetItems.clear(); }
+
+	public int getCount(){ return widgetItems.size(); }
+
+	public RemoteViews getLoadingView(){ return null; }
 
 	public int getViewTypeCount(){
 		return 1;
@@ -118,11 +102,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
 	}
 
 	public void onDataSetChanged(){
-		// This is triggered when you call AppWidgetManager notifyAppWidgetViewDataChanged
-		// on the collection view corresponding to this factory. You can do heaving lifting in
-		// here, synchronously. For example, if you need to process an image, fetch something
-		// from the network, etc., it is ok to do it here, synchronously. The widget will remain
-		// in its current state while work is being done here, so you don't need to worry about
-		// locking up the widget.
+		// Triggered AppWidgetManager.getInstance(context).notifyAppWidgetViewDataChanged(...)
+		updateWidgets();
 	}
 }

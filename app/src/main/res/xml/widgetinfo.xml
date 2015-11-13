@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--android:autoAdvanceViewId = "@id/stack_view"-->
+<!--not needed -->
 <appwidget-provider
-	android:autoAdvanceViewId = "@id/stack_view"
 	android:initialLayout = "@layout/widget_layout"
 	android:minHeight = "110dip"
 	android:minWidth = "110dip"

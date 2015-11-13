@@ -2,6 +2,8 @@ package com.nullcognition.yaatc.view.fragment.presenter;
 // ersin 17/10/15 Copyright (c) 2015+ All rights reserved.
 
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -22,22 +24,16 @@ import com.nullcognition.yaatc.model.item.FeedItem;
 import com.nullcognition.yaatc.model.item.TextItem;
 import com.nullcognition.yaatc.view.adapter.FeedAdapter;
 import com.nullcognition.yaatc.view.fragment.FeedFragment;
+import com.nullcognition.yaatc.widget.StackWidgetProvider;
 import com.pushtorefresh.storio.contentresolver.StorIOContentResolver;
-import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 
 import java.util.List;
 
 public class FeedPresenter extends BasePresenter{
 
-	FeedAdapter  adapter;
-	StorIOSQLite storIOSQLite;
+	private FeedAdapter           adapter;
 	private RecyclerView          recyclerView;
 	private StorIOContentResolver contentResolver;
-
-	public FeedPresenter(final FeedFragment feedFragment, final StorIOSQLite storIOSQLite){
-		super(feedFragment);
-		this.storIOSQLite = storIOSQLite;
-	}
 
 	public FeedPresenter(final FeedFragment feedFragment, final StorIOContentResolver contentResolver){
 		super(feedFragment);
@@ -66,7 +62,6 @@ public class FeedPresenter extends BasePresenter{
 
 	private LoaderManager.LoaderCallbacks<List<FeedItem>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<FeedItem>>(){
 		@Override public Loader<List<FeedItem>> onCreateLoader(final int id, final Bundle args){
-//			return new DbLoader(baseFragment.getActivity().getApplicationContext(), storIOSQLite);
 			return new DbLoader(baseFragment.getActivity().getApplicationContext(), contentResolver);
 		}
 
@@ -88,7 +83,6 @@ public class FeedPresenter extends BasePresenter{
 	}
 
 	// note the get requires the uri
-
 	public List<Tweet> getTweets(){
 		// remember that the Query class exists both in the contentReslover and the Sqlite implementation of storio, pick the
 		// right one for the specific use case
@@ -108,11 +102,7 @@ public class FeedPresenter extends BasePresenter{
 		TextItem textItem = new TextItem(tweet.content(), tweet.isStarred(), tweet.location());
 		adapter.addItem(textItem);
 		adapter.notifyDataSetChanged();
-//		storIOSQLite
-//				.put()
-//				.object(tweetEvent.tweet)
-//				.prepare()
-//				.executeAsBlocking();
+
 		contentResolver.put()
 		               .object(tweetEvent.tweet)
 		               .prepare()
@@ -123,26 +113,14 @@ public class FeedPresenter extends BasePresenter{
 		adapter.deleteItem(deleteTweetEvent.itemPositionInList);
 		adapter.notifyDataSetChanged();
 		// double db calls, use query to get the exact based on position in list
-		Tweet t = getTweets().get(deleteTweetEvent.itemPositionInList);
-//		String text = t.content();
+		Tweet tweet = getTweets().get(deleteTweetEvent.itemPositionInList);
 
 		contentResolver.delete()
-				.object(t) // could have used a query based on the objects values
-				.prepare()
-				.executeAsBlocking();
+		               .object(tweet)
+		               .prepare()
+		               .executeAsBlocking();
 
-//		if(t.isStarred()){
-//			Intent intent = new Intent(baseFragment.getContext(), WidgetProvider.class);
-//			intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-//			// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-//			// since it seems the onUpdate() is only fired on that:
-//			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(baseFragment.getContext());
-//			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(baseFragment.getContext(), WidgetProvider.class));
-//			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-//			baseFragment.getActivity().sendBroadcast(intent);
-//
-//			AppWidgetManager.getInstance(baseFragment.getContext()).notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
-//		}
+		updateWidgets();
 	}
 
 	public void setStarred(final TweetHandler.StarredEvent starredEvent){
@@ -152,14 +130,20 @@ public class FeedPresenter extends BasePresenter{
 		adapter.setStared(starredEvent.itemPositionInList, starredEvent.isStarred);
 		adapter.notifyItemChanged(starredEvent.itemPositionInList);
 
-		// trying to find if this is what calls the provider thus ensure that the value of starred is correctly changed. As of now the isStarred value is the provider
-		// content values is always true, and not changing to false
-
 		contentResolver.put()
 		               .object(tweet)
 		               .prepare()
 		               .executeAsBlocking();
 
+		updateWidgets();
+	}
+
+	private void updateWidgets(){
+			AppWidgetManager awm = AppWidgetManager.getInstance(baseFragment.getContext());
+			int[] appWidgetIds = awm.getAppWidgetIds(new ComponentName(baseFragment.getContext(), StackWidgetProvider.class));
+			awm.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
+	}
+}
 
 //		if(t.isStarred()){
 //			Intent intent = new Intent(baseFragment.getContext(), WidgetProvider.class);
@@ -173,6 +157,4 @@ public class FeedPresenter extends BasePresenter{
 //
 //			AppWidgetManager.getInstance(baseFragment.getContext()).notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
 //		}
-		// working, bug was due to missing isStared assignment in teh TextItem class upon creation in getFeedItems()
-	}
-}
+// working, bug was due to missing isStared assignment in teh TextItem class upon creation in getFeedItems()
