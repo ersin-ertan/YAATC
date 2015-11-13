@@ -1,4 +1,5 @@
-# Yet Another Twitter Client<span style="font-size:0.4em;">An Offline Twitter</span>
+# Yet Another Twitter Client
+a.k.a. Twitter Offline**
 
 ### App Features
 
@@ -27,3 +28,8 @@
 - Staggered grid columns as 2 and 3 based on orientation
 - Material design toolbar/buttons/dialogs
 - Stackable widgets on home screen
+
+
+
+
+** twitters logo is a bird, which can be visualized as perched on a power-line, metaphorically off-line implies a loss of connection(to the internet/social consciousness), or simply of the bird who is off the line
