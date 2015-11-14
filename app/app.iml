@@ -129,8 +129,8 @@
     <orderEntry type="library" exported="" name="eventbus-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.4" level="project" />
     <orderEntry type="library" exported="" name="content-resolver-1.6.0" level="project" />
-    <orderEntry type="library" exported="" name="minlog-1.3.0" level="project" />
     <orderEntry type="library" exported="" name="javax.annotation-api-1.2" level="project" />
+    <orderEntry type="library" exported="" name="minlog-1.3.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-23.1.0" level="project" />
     <orderEntry type="library" exported="" name="core-0.8.3.0" level="project" />
     <orderEntry type="library" exported="" name="kryo-serializers-0.33" level="project" />
