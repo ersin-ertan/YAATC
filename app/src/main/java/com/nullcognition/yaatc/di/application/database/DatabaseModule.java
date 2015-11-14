@@ -26,21 +26,6 @@ import dagger.Provides;
 		return new DbOpenHelper(app.getApplicationContext());
 	}
 
-//	@Singleton
-//	@Provides StorIOSQLite provideStorioSQLite(SQLiteOpenHelper sqLiteOpenHelper){
-//		return DefaultStorIOSQLite
-//				.builder()
-//				.sqliteOpenHelper(sqLiteOpenHelper)
-//				.addTypeMapping(
-//						Tweet.class,
-//						SQLiteTypeMapping.<Tweet>builder()
-//						                 .putResolver(new TweetStorIOSQLitePutResolver())
-//						                 .getResolver(new TweetStorIOSQLiteGetResolver())
-//						                 .deleteResolver(new TweetStorIOSQLiteDeleteResolver())
-//						                 .build())
-//				.build();
-//	}
-
 	@Singleton
 	@Provides StorIOContentResolver provideStorioContentResolver(YAATCApp app){
 		return DefaultStorIOContentResolver

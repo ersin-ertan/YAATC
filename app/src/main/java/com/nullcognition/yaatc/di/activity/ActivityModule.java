@@ -43,7 +43,7 @@ import dagger.Provides;
 
 	@ActivityScope
 	@Provides GoogleSignInOptions provideGoogleSignInOptions(){
-		return new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
+		return new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestId().build();
 	}
 
 	@ActivityScope
@@ -51,7 +51,7 @@ import dagger.Provides;
 			final Context context, final BaseActivity ba, GoogleSignInOptions gso){
 
 		return new GoogleApiClient.Builder(context)
-				.enableAutoManage(ba, (MainActivity) ba) // because of cast, can only be used in login
+				.enableAutoManage(ba, (MainActivity) ba)
 				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
 				.build();
 	}

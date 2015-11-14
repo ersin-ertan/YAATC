@@ -4,24 +4,20 @@ package com.nullcognition.yaatc.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.nullcognition.yaatc.db.TweetsTable;
-import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteColumn;
-import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
-
-@StorIOSQLiteType(table = TweetsTable.TABLE)
+//@StorIOSQLiteType(table = TweetsTable.TABLE)
 public class Tweet{
 
-	@Nullable
-	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_ID, key = true)
+	//	@Nullable
+//	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_ID, key = true)
 	Long id;
 
-	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_CONTENT)
+	//	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_CONTENT)
 	String content;
 
-	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_STARRED)
+	//	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_STARRED)
 	Integer isStarred;
 
-	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_LOCATION)
+	//	@StorIOSQLiteColumn(name = TweetsTable.COLUMN_LOCATION)
 	String location;
 
 	Tweet(){}
@@ -79,7 +75,7 @@ public class Tweet{
 	public int hashCode(){
 		int result = id != null ? id.hashCode() : 0;
 		result = 31 * result + content.hashCode();
-//		result += isStarred ? 1 : 0; // could this hash modification be why the put operation are not referencing the same object?
+//		result += isStarred ? 1 : 0; // could this hash modification be why the put operation are not referencing the same object? // No
 		return result;
 	}
 

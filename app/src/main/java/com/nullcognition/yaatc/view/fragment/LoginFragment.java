@@ -14,6 +14,8 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.nullcognition.yaatc.R;
 import com.nullcognition.yaatc.di.fragment.BaseFragment;
 import com.nullcognition.yaatc.view.PasswordEvent;
@@ -21,7 +23,6 @@ import com.nullcognition.yaatc.view.fragment.presenter.LoginPresenter;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Provider;
 
 import butterknife.OnClick;
 import butterknife.OnLongClick;
@@ -34,14 +35,15 @@ public class LoginFragment extends BaseFragment<LoginPresenter>{
 	private static final String DEFAULT           = "default";
 	private static final int    RC_SIGN_IN        = 9001;
 	public static final  String LOGIN_GAPI_CLIENT = "loginGoogleApiClient";
-	public static final  String UNLOCK            = "unlock";
+	public static        String requestId         = null;
 
-	@Inject @Named(LOGIN_GAPI_CLIENT)    GoogleApiClient          googleApiClient;
-	@Inject @Named(LoginFragment.UNLOCK) Provider<MaterialDialog> unlockDialog;
+	@Inject @Named(LOGIN_GAPI_CLIENT) GoogleApiClient googleApiClient;
 
-	@OnLongClick(R.id.centered_image) boolean loginLogo(final View view){
-		Paper.book().destroy();
-		Paper.book().write(PASS, DEFAULT);
+	@OnLongClick(R.id.centered_image) boolean loginLogo(){
+		if(requestId != null){
+			Paper.book(requestId).destroy();
+			Paper.book(requestId).write(PASS, DEFAULT);
+		}
 		return true;
 	}
 
@@ -63,35 +65,67 @@ public class LoginFragment extends BaseFragment<LoginPresenter>{
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if(requestCode == RC_SIGN_IN){
+			Log.d(TAG, "" + data.toString());
 			GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+			Log.d(TAG, "" + result.toString());
 			handleSignInResult(result);
 		}
 	}
 
 	private void handleSignInResult(GoogleSignInResult result){
-		Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+		Log.d(TAG, "handleSignInResult: " + result.isSuccess() + " because result is" + result.getStatus());
 		if(result.isSuccess()){
 			final GoogleSignInAccount acct = result.getSignInAccount();
-			if(DEFAULT.equals(
-					Paper.book(acct.getId()).read(PASS, DEFAULT))){
-				Context context = getContext();
-				new MaterialDialog.Builder(context)
-						.title(R.string.set_passkey)
-						.inputType(InputType.TYPE_CLASS_NUMBER)
-						.icon(context.getDrawable(android.R.drawable.ic_lock_lock))
-						.positiveText(R.string.set_passkey)
-						.input(context.getString(R.string.passkey_here), null, new MaterialDialog.InputCallback(){
-							@Override public void onInput(final MaterialDialog materialDialog, final CharSequence charSequence){
-								Paper.book(acct.getId()).write(LoginFragment.PASS, charSequence.toString());
-								navigator.switchFragment(LoginFragment.this, FeedFragment.class);
-							}
-						}).build().show();
+			requestId = acct.getId();
+			if(DEFAULT.equals(Paper.book(requestId).read(PASS, DEFAULT))){
+				provideSetkeyDialog().show();
 			}
 			else{
 				Toast.makeText(getContext(), "Hey, " + acct.getDisplayName(), Toast.LENGTH_SHORT).show();
-				unlockDialog.get().show();
+				provideUnlockDialog().show();
 			}
 		}
-		else{ Toast.makeText(getContext(), "Trouble Connecting...", Toast.LENGTH_SHORT).show(); }
+		else{
+			Toast.makeText(getContext(), "Trouble Connecting...", Toast.LENGTH_SHORT).show(); // possible that internet connection will can cause login bug
+			Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+					new ResultCallback<Status>(){
+						@Override public void onResult(Status status){ Log.d(TAG, "" + status.toString());}
+					});
+		}
+	}
+
+	private MaterialDialog provideSetkeyDialog(){
+		final Context context = getContext();
+		return new MaterialDialog.Builder(context)
+				.title(R.string.set_passkey)
+				.inputType(InputType.TYPE_CLASS_NUMBER)
+				.icon(context.getDrawable(android.R.drawable.ic_lock_lock))
+				.positiveText(R.string.set_passkey)
+				.input(context.getString(R.string.passkey_here), null, new MaterialDialog.InputCallback(){
+					@Override public void onInput(final MaterialDialog materialDialog, final CharSequence charSequence){
+						Paper.book(requestId).write(PASS, charSequence.toString());
+						navigator.switchFragment(LoginFragment.this, FeedFragment.class);
+					}
+				}).build();
+	}
+
+	private MaterialDialog provideUnlockDialog(){
+		final Context context = getContext();
+		return new MaterialDialog.Builder(context)
+				.title(R.string.unlock)
+				.inputType(InputType.TYPE_CLASS_NUMBER)
+				.icon(context.getDrawable(android.R.drawable.ic_partial_secure))
+				.positiveText(R.string.unlock)
+				.input(context.getString(R.string.passkey_here), null, new MaterialDialog.InputCallback(){
+							@Override public void onInput(final MaterialDialog materialDialog, final CharSequence charSequence){
+								if(charSequence.toString().equals(Paper.book(requestId).read(LoginFragment.PASS))){
+									navigator.switchFragment(LoginFragment.this, FeedFragment.class);
+								}
+								else{
+									Toast.makeText(context, R.string.passkey_incorrect, Toast.LENGTH_SHORT).show();
+								}
+							}
+						}
+				).build();
 	}
 }

@@ -14,13 +14,9 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 		super(context, DATABASE_NAME, null, 1);
 	}
 
-	@Override
-	public void onCreate(@NonNull SQLiteDatabase db){
+	@Override public void onCreate(@NonNull SQLiteDatabase db){
 		db.execSQL(TweetsTable.getCreateTableQuery());
 	}
 
-	@Override
-	public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion){
-		// no impl
-	}
+	@Override public void onUpgrade(@NonNull SQLiteDatabase db, int oldVersion, int newVersion){ }
 }

@@ -14,12 +14,9 @@ import javax.inject.Singleton;
 @Singleton
 public class Navigator{
 
-	//	private final ActivitySwitcher activitySwitcher;
 	private final FragmentSwitcher fragmentSwitcher;
 
-	@Inject public Navigator(//final ActivitySwitcher activitySwitcher,
-	                         final FragmentSwitcher fragmentSwitcher){
-//		this.activitySwitcher = activitySwitcher;
+	@Inject public Navigator(final FragmentSwitcher fragmentSwitcher){
 		this.fragmentSwitcher = fragmentSwitcher;
 	}
 
@@ -28,7 +25,7 @@ public class Navigator{
 	}
 
 	public void startFragment(final BaseActivity baseActivity, final int containerId, final Class<? extends BaseFragment> startFragment){
-			fragmentSwitcher.starter(baseActivity, containerId, startFragment);
+		fragmentSwitcher.starter(baseActivity, containerId, startFragment);
 	}
 
 	public BaseFragment getCurrentFragment(){ return fragmentSwitcher.getCurrentFragment(); }
